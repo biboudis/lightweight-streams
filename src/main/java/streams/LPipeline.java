@@ -1,7 +1,5 @@
 package streams;
 
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -21,7 +19,7 @@ public class LPipeline<T> implements LStream<T> {
     @Override
     public <R> LStream<R> map(Function<T, R> f) {
         Consumer<Function<R, Boolean>> consumer = (iterf) ->
-                streamf.accept(value-> iterf.apply(f.apply(value)));
+                streamf.accept(value -> iterf.apply(f.apply(value)));
 
         return new LPipeline<R>(consumer);
     }
@@ -29,7 +27,7 @@ public class LPipeline<T> implements LStream<T> {
     @Override
     public LStream<T> filter(Function<T, Boolean> predicate) {
         Consumer<Function<T, Boolean>> consumer = (iterf) ->
-                streamf.accept(value-> predicate.apply(value)?iterf.apply(value):true);
+                streamf.accept(value -> predicate.apply(value) ? iterf.apply(value) : true);
 
         return new LPipeline<T>(consumer);
     }
@@ -68,7 +66,7 @@ public class LPipeline<T> implements LStream<T> {
     @Override
     public <R> LStream<R> flatMap(Function<T, LStream<R>> f) {
         Consumer<Function<R, Boolean>> consumer = (iterf) ->
-                streamf.accept(value-> {
+                streamf.accept(value -> {
                     LStream<R> streamfInternal = f.apply(value);
                     streamfInternal.getStreamf().accept(iterf);
                     return true;

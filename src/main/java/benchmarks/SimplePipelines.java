@@ -83,4 +83,32 @@ public class SimplePipelines {
                 .reduce(0L, Long::sum);
         return cart;
     }
+
+    @Benchmark
+    public Long map_Megamorphic_Boxed_Long_LStreams(){
+        Long sum = LStream.ofArray(v)
+                .map(x -> x + 2L)
+                .map(x -> x + 2L)
+                .map(x -> x + 2L)
+                .map(x -> x + 2L)
+                .map(x -> x + 2L)
+                .map(x -> x + 2L)
+                .reduce(0L, Long::sum);
+
+        return sum;
+    }
+
+    @Benchmark
+    public Long map_Megamorphic_Boxed_Long_Java8Streams(){
+        Long sum = Stream.of(v)
+                .map(x -> x + 2L)
+                .map(x -> x + 2L)
+                .map(x -> x + 2L)
+                .map(x -> x + 2L)
+                .map(x -> x + 2L)
+                .map(x -> x + 2L)
+                .reduce(0L, Long::sum);
+
+        return sum;
+    }
 }

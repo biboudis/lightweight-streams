@@ -1,7 +1,21 @@
+(-XX:-TieredCompilation)
 Benchmark                                                    Mode  Samples       Score  Score error  Units
 b.SimplePipelines.cart_Boxed_Long_Baseline                   avgt       10    1656.069       52.841  us/op
 b.SimplePipelines.cart_Boxed_Long_Java8Streams               avgt       10    4603.143      260.045  us/op
 b.SimplePipelines.cart_Boxed_Long_LStreams                   avgt       10    4148.314       96.394  us/op
+b.SimplePipelines.map_Megamorphic_Boxed_Long_Java8Streams    avgt       10  898700.525     8688.339  us/op
+b.SimplePipelines.map_Megamorphic_Boxed_Long_LStreams        avgt       10  998793.866   344339.147  us/op
 b.SimplePipelines.map_filter_fold_Boxed_Long_Baseline        avgt       10  152137.698     8891.963  us/op
 b.SimplePipelines.map_filter_fold_Boxed_Long_Java8Streams    avgt       10  190655.016     3159.224  us/op
 b.SimplePipelines.map_filter_fold_Boxed_Long_LStreams        avgt       10  233473.979    19700.333  us/op
+
+(-XX:-TieredCompilation -XX:MaxInlineLevel=15)
+Benchmark                                                    Mode  Samples       Score  Score error  Units
+b.SimplePipelines.cart_Boxed_Long_Baseline                   avgt       10    1633.815       87.523  us/op
+b.SimplePipelines.cart_Boxed_Long_Java8Streams               avgt       10    4289.437       59.186  us/op
+b.SimplePipelines.cart_Boxed_Long_LStreams                   avgt       10    4048.068       81.014  us/op
+b.SimplePipelines.map_Megamorphic_Boxed_Long_Java8Streams    avgt       10  918816.995     8009.594  us/op
+b.SimplePipelines.map_Megamorphic_Boxed_Long_LStreams        avgt       10  930885.807    47656.795  us/op
+b.SimplePipelines.map_filter_fold_Boxed_Long_Baseline        avgt       10  143874.993     8254.694  us/op
+b.SimplePipelines.map_filter_fold_Boxed_Long_Java8Streams    avgt       10  187630.161     6262.277  us/op
+b.SimplePipelines.map_filter_fold_Boxed_Long_LStreams        avgt       10  230835.550    11198.587  us/op
