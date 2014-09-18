@@ -1,4 +1,4 @@
-# Lightweight Streams for Java.
+## Lightweight Streams for Java
 
 ### References
 
