@@ -2,7 +2,7 @@ package benchmarks;
 
 import org.openjdk.jmh.annotations.*;
 import streams.LStream;
-import java.util.concurrent.TimeUnit;
+
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -29,7 +29,7 @@ public class SimplePipelines {
     }
 
     @Benchmark
-    public long cart_Boxed_Long_Baseline() {
+    public Long cart_Boxed_Long_Baseline() {
         Long cart = 0L;
         for (int d = 0 ; d < v1.length ; d++) {
             for (int dp = 0 ; dp < v2.length ; dp++){
@@ -39,7 +39,7 @@ public class SimplePipelines {
         return cart;
     }
     @Benchmark
-    public long map_filter_fold_Boxed_Long_Baseline() {
+    public Long map_filter_fold_Boxed_Long_Baseline() {
         Long acc = 0L;
         for (int i =0 ; i < v.length ; i++) {
             if (v[i] % 2 == 0)
