@@ -14,9 +14,10 @@ java -XX:-TieredCompilation -jar target/microbenchmarks.jar -wi 15 -i 10 -f 1 -g
 ```   
     
 ### References
-* [Clash of the Lambdas: Microbenchmarking collections, via the functional APIs of Java 8, Scala, C#, F#.](http://biboudis.github.io/clashofthelambdas/)
+* [Clash of the Lambdas](http://biboudis.github.io/clashofthelambdas/)
 * [Nessos/Streams](https://github.com/nessos/Streams)
-* [Java 8 Streams (in JDK9 tip)] (http://hg.openjdk.java.net/jdk9/jdk9/jdk/file/tip/src/java.base/share/classes/java/util/stream)
+* Java Streams 
+    [code](http://hg.openjdk.java.net/jdk9/jdk9/jdk/file/tip/src/java.base/share/classes/java/util/stream) / [docs](http://docs.oracle.com/javase/8/docs/api/java/util/stream/package-summary.html)
 
 ### Dependencies
 * [JMH](http://openjdk.java.net/projects/code-tools/jmh/)
