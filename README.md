@@ -3,10 +3,13 @@
 ### Test
 
 ```shell 
+# run unit tests
 mvn -q test
- 
+
+# build benchmarks über-jar
 mvn clean package -Dskiptests
-    
+
+# run benchmarks
 java -XX:-TieredCompilation -jar target/microbenchmarks.jar -wi 15 -i 10 -f 1 -gc -tu ms ".*"
 ```   
     
