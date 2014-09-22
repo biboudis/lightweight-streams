@@ -1,10 +1,11 @@
 ## Lightweight Streams for Java
 
 This library employs the same pattern that the standard Java 8 library does but
-without iterators/spliterators and is based on lambdas only continuation-passing
-only. The programming model consists of combinators that wrap a source with the
-```LStream``` datatype and any combinators that are applied, effectively declare
-the transformations needed to be applied when an eager combinator is met.
+without iterators/spliterators and is based on lambdas/continuation-passing
+only. The programming model consists of combinators that wrap a source with a
+datatype which implements the ```LStream``` interface. Any combinators that
+are applied, effectively declare the transformations needed to be applied when
+an eager combinator is met.
 
 ```
 source - lazy - lazy - lazy - eager
