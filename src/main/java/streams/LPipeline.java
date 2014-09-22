@@ -1,5 +1,7 @@
 package streams;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import java.util.*;
 import java.util.function.*;
 
@@ -76,7 +78,7 @@ public class LPipeline<T> implements LStream<T>  {
     @Override
     public LStream<T> sorted(Comparator<? super T> comparator) {
 
-        Vector<T> vector = new Vector<>();
+        Vector<T> vector = new Vector<T>();
 
         streamf.accept(value -> {
             vector.add(value);
@@ -104,5 +106,10 @@ public class LPipeline<T> implements LStream<T>  {
         T arrayV[] = generator.apply(vector.size());
 
         return vector.toArray(arrayV);
+    }
+
+    @Override
+    public int length() {
+        throw new NotImplementedException();
     }
 }

@@ -35,6 +35,8 @@ public interface LStream<T> {
 
     LStream<T> sorted (Comparator<? super T> comparator );
 
+    int length ();
+
     T[] toArray(IntFunction<T[]> generator);
 
     Consumer<Function<T, Boolean>> getTryAdvanceLambda();
