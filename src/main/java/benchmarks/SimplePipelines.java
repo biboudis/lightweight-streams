@@ -20,7 +20,7 @@ java -XX:-TieredCompilation -jar target/microbenchmarks.jar -wi 15 -i 10 -f 1 -g
 @BenchmarkMode(Mode.AverageTime)
 public class SimplePipelines {
 
-    static final int N = 10000000;
+    static final int N = 1000;
     static Long[] v, v1,v2;
 
     static {
