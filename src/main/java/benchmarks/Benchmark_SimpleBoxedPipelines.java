@@ -30,7 +30,7 @@ public class Benchmark_SimpleBoxedPipelines {
     }
 
     @Benchmark
-    public Long cart_BoxedLong_Baseline() {
+    public Long cart_Baseline() {
         Long cart = 0L;
         for (int d = 0 ; d < v1.length ; d++) {
             for (int dp = 0 ; dp < v2.length ; dp++){
@@ -40,7 +40,7 @@ public class Benchmark_SimpleBoxedPipelines {
         return cart;
     }
     @Benchmark
-    public Long map_filter_fold_BoxedLong_Baseline() {
+    public Long map_filter_fold_Baseline() {
         Long acc = 0L;
         for (int i =0 ; i < v.length ; i++) {
             if (v[i] % 2 == 0)
@@ -50,7 +50,7 @@ public class Benchmark_SimpleBoxedPipelines {
     }
 
     @Benchmark
-    public Long map_filter_fold_BoxedLong_Java8Streams() {
+    public Long map_filter_fold_Java8Streams() {
         Long sum = Stream.of(v)
                 .filter(x -> x % 2L == 0L)
                 .map(x -> x + 2L)
@@ -60,7 +60,7 @@ public class Benchmark_SimpleBoxedPipelines {
     }
 
     @Benchmark
-    public Long map_filter_fold_BoxedLong_LStreams() {
+    public Long map_filter_fold_LStreams() {
         Long sum = LStream.of(v)
                 .filter(x -> x % 2L == 0L)
                 .map(x -> x + 2L)
@@ -70,7 +70,7 @@ public class Benchmark_SimpleBoxedPipelines {
     }
 
     @Benchmark
-    public Long cart_BoxedLong_Java8Streams() {
+    public Long cart_Java8Streams() {
         long cart = Stream.of(v1)
                 .flatMap(d -> Stream.of(v2).map(dP -> dP * d))
                 .reduce(0L, Long::sum);
@@ -78,7 +78,7 @@ public class Benchmark_SimpleBoxedPipelines {
     }
 
     @Benchmark
-    public Long cart_BoxedLong_LStreams() {
+    public Long cart_LStreams() {
         long cart = LStream.of(v1)
                 .flatMap(d -> LStream.of(v2).<Long>map(dP -> dP * d))
                 .reduce(0L, Long::sum);
@@ -86,7 +86,7 @@ public class Benchmark_SimpleBoxedPipelines {
     }
 
     @Benchmark
-    public Long map_Megamorphic_BoxedLong_LStreams(){
+    public Long map_Megamorphic_LStreams(){
         Long sum = LStream.of(v)
                 .map(x -> x + 2L)
                 .map(x -> x + 2L)
@@ -100,7 +100,7 @@ public class Benchmark_SimpleBoxedPipelines {
     }
 
     @Benchmark
-    public Long map_Megamorphic_BoxedLong_Java8Streams(){
+    public Long map_Megamorphic_Java8Streams(){
         Long sum = Stream.of(v)
                 .map(x -> x + 2L)
                 .map(x -> x + 2L)
@@ -114,7 +114,7 @@ public class Benchmark_SimpleBoxedPipelines {
     }
 
     @Benchmark
-    public Long[] sort_BoxedLong_LStreams(){
+    public Long[] sort_LStreams(){
         Long[] res = LStream.of(v)
                 .sorted(Comparator.<Long>naturalOrder())
                 .toArray(Long[]::new);
@@ -123,7 +123,7 @@ public class Benchmark_SimpleBoxedPipelines {
     }
 
     @Benchmark
-    public Long[] sort_BoxedLong_Java8Streams(){
+    public Long[] sort_Java8Streams(){
         Long[] res = Stream.of(v)
                 .sorted(Comparator.<Long>naturalOrder())
                 .toArray(Long[]::new);

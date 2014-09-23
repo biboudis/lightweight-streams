@@ -32,7 +32,7 @@ public class Benchmark_SimplePrimitivePipelines {
     }
 
     @Benchmark
-    public long cart_PrimitiveLong_Baseline() {
+    public long cart_Baseline() {
         long cart = 0L;
         for (int d = 0 ; d < v1.length ; d++) {
             for (int dp = 0 ; dp < v2.length ; dp++){
@@ -42,7 +42,7 @@ public class Benchmark_SimplePrimitivePipelines {
         return cart;
     }
     @Benchmark
-    public long map_filter_fold_PrimitiveLong_Baseline() {
+    public long map_filter_fold_Baseline() {
         long acc = 0L;
         for (int i =0 ; i < v.length ; i++) {
             if (v[i] % 2 == 0)
@@ -52,7 +52,7 @@ public class Benchmark_SimplePrimitivePipelines {
     }
 
     @Benchmark
-    public long map_filter_fold_PrimitiveLong_Java8Streams() {
+    public long map_filter_fold_Java8Streams() {
         long sum = LongStream.of(v)
                 .filter(x -> x % 2L == 0L)
                 .map(x -> x + 2L)
@@ -62,7 +62,7 @@ public class Benchmark_SimplePrimitivePipelines {
     }
 
     @Benchmark
-    public long map_filter_fold_PrimitiveLong_LStreams() {
+    public long map_filter_fold_LStreams() {
         long sum = LongLStream.of(v)
                 .filter(x -> x % 2L == 0L)
                 .map(x -> x + 2L)
@@ -72,7 +72,7 @@ public class Benchmark_SimplePrimitivePipelines {
     }
 
     @Benchmark
-    public long cart_PrimitiveLong_Java8Streams() {
+    public long cart_Java8Streams() {
         long cart = LongStream.of(v1)
                 .flatMap(d -> LongStream.of(v2).map(dP -> dP * d))
                 .reduce(0L, Long::sum);
@@ -81,7 +81,7 @@ public class Benchmark_SimplePrimitivePipelines {
     }
 
     @Benchmark
-    public long cart_PrimitiveLong_LStreams() {
+    public long cart_LStreams() {
         long cart = LongLStream.of(v1)
                 .flatMap(d -> LongLStream.of(v2).map(dP -> dP * d))
                 .reduce(0L, Long::sum);
@@ -89,7 +89,7 @@ public class Benchmark_SimplePrimitivePipelines {
     }
 
     @Benchmark
-    public long map_Megamorphic_PrimitiveLong_LStreams(){
+    public long map_Megamorphic_LStreams(){
         long sum = LongLStream.of(v)
                 .map(x -> x + 2L)
                 .map(x -> x + 2L)
@@ -103,7 +103,7 @@ public class Benchmark_SimplePrimitivePipelines {
     }
 
     @Benchmark
-    public long map_Megamorphic_PrimitiveLong_Java8Streams(){
+    public long map_Megamorphic_Java8Streams(){
         long sum = LongStream.of(v)
                 .map(x -> x + 2L)
                 .map(x -> x + 2L)
@@ -117,7 +117,7 @@ public class Benchmark_SimplePrimitivePipelines {
     }
 
     @Benchmark
-    public long[] sort_PrimitiveLong_LStreams(){
+    public long[] sort_LStreams(){
         long[] res = LongLStream.of(v)
                 .sorted()
                 .toArray();
@@ -126,7 +126,7 @@ public class Benchmark_SimplePrimitivePipelines {
     }
 
     @Benchmark
-    public long[] sort_PrimitiveLong_Java8Streams(){
+    public long[] sort_Java8Streams(){
         long[] res = LongStream.of(v)
                 .sorted()
                 .toArray();
