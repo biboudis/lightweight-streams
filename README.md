@@ -1,5 +1,7 @@
 ## Lightweight Streams for Java
 
+[![Build Status](https://travis-ci.org/biboudis/lightweight-streams.svg?branch=master)](https://travis-ci.org/biboudis/lightweight-streams)
+
 This library employs the same pattern that the standard Java 8 library does but
 without iterators/spliterators and is based on lambdas/continuation-passing
 only. The programming model consists of combinators that wrap a source with a
