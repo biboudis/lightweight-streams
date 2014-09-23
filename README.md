@@ -9,8 +9,8 @@ an eager combinator is met.
 
 ``` source - lazy - lazy - lazy - eager ```
 
-The purpose of this library is to assist the study of the inlining decisions
-that the JVM makes when following the j.u.stream implementation strategy.
+The purpose of this library is to help with the study of the inlining decisions
+that the JVM makes, when following the j.u.stream implementation strategy.
 
 ### Test
 ```shell 
