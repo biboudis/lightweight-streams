@@ -1,6 +1,5 @@
 package streams;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -25,7 +24,7 @@ public interface LStream<T> {
 
     <R> LStream<R> map (Function<T,R> f);
 
-    LStream<T> filter (Function<T, Boolean> predicate);
+    LStream<T> filter (Predicate<T> predicate);
 
     T reduce (T state, BinaryOperator<T> folder);
 

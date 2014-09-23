@@ -1,7 +1,5 @@
 package streams;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import java.util.*;
 import java.util.function.*;
 
@@ -26,9 +24,9 @@ public class LPipeline<T> implements LStream<T>  {
     }
 
     @Override
-    public LStream<T> filter(Function<T, Boolean> predicate) {
+    public LStream<T> filter(Predicate<T> predicate) {
         Consumer<Function<T, Boolean>> consumer = (iterf) ->
-                streamf.accept(value -> predicate.apply(value) ? iterf.apply(value) : true);
+                streamf.accept(value -> predicate.test(value) ? iterf.apply(value) : true);
 
         return new LPipeline<T>(consumer);
     }
@@ -37,30 +35,29 @@ public class LPipeline<T> implements LStream<T>  {
     public T reduce(T identity, BinaryOperator<T> accumulator) {
         // final AtomicReference<T> ref = new AtomicReference<>(identity);
 
-        final Ref<T> state = new Ref<T>(identity);
+        final Box<T> state = new Box<T>(identity);
 
         streamf.accept(value -> {
             //ref.getAndAccumulate(identity, accumulator);
-            state.setRef(accumulator.apply(state.getRef(), value));
+            state.setValue(accumulator.apply(state.getValue(), value));
             return true;
         });
 
-        return state.getRef();
+        return state.getValue();
     }
 
-    @Override
     public <U> U reduce(U identity, BiFunction<U,? super T,U> accumulator) {
         // final AtomicReference<T> ref = new AtomicReference<>(state);
 
-        final Ref<U> state = new Ref<U>(identity);
+        final Box<U> state = new Box<U>(identity);
 
         streamf.accept(value -> {
             //ref.getAndAccumulate(value, folder);
-            state.setRef(accumulator.apply(state.getRef(), value));
+            state.setValue(accumulator.apply(state.getValue(), value));
             return true;
         });
 
-        return state.getRef();
+        return state.getValue();
     }
 
     @Override
@@ -78,38 +75,38 @@ public class LPipeline<T> implements LStream<T>  {
     @Override
     public LStream<T> sorted(Comparator<? super T> comparator) {
 
-        Vector<T> vector = new Vector<T>();
+        ArrayList<T> buffer = new ArrayList<>();
 
         streamf.accept(value -> {
-            vector.add(value);
+            buffer.add(value);
             return true;
         });
 
-        vector.sort(comparator);
+        buffer.sort(comparator);
 
-        Object arrayV[] = new Object[vector.size()];
+        Object arrayV[] = new Object[buffer.size()];
 
-        T[] sorted = vector.toArray((T[]) arrayV);
+        T[] sorted = buffer.toArray((T[]) arrayV);
 
         return LStream.of(sorted);
     }
 
     @Override
     public T[] toArray(IntFunction<T[]> generator) {
-        Vector<T> vector = new Vector<T>();
+        ArrayList<T> buffer = new ArrayList<>();
 
-        vector = reduce(vector, (accList, value) -> {
-            accList.addElement(value);
+        buffer = reduce(buffer, (accList, value) -> {
+            accList.add(value);
             return accList;
         });
 
-        T arrayV[] = generator.apply(vector.size());
+        T arrayV[] = generator.apply(buffer.size());
 
-        return vector.toArray(arrayV);
+        return buffer.toArray(arrayV);
     }
 
     @Override
     public int length() {
-        throw new NotImplementedException();
+        return -1;
     }
 }
