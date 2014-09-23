@@ -32,4 +32,3 @@ java -XX:-TieredCompilation -jar target/microbenchmarks.jar -wi 15 -i 10 -f 1 -g
 ### Dependencies
 * [JMH](http://openjdk.java.net/projects/code-tools/jmh/)
 * [junit](http://junit.org/)
-
