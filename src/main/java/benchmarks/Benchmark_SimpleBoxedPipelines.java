@@ -3,6 +3,7 @@ package benchmarks;
 import org.openjdk.jmh.annotations.*;
 import streams.LStream;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -20,13 +21,16 @@ java -Xmx1g -XX:-TieredCompilation -XX:MaxInlineLevel=12 -Dbenchmark.N=1000000 -
 public class Benchmark_SimpleBoxedPipelines {
 
     static final int N =  Integer.getInteger("benchmark.N", 1000);
-    static Long[] v, v1,v2;
+    static Long[] v, v1,v2, v_forSorting_Baseline ,v_forSorting_LStreams, v_forSorting_Java8Streams;
 
     static {
         // Ok, lets use IntStream for this :P
         v  = IntStream.range(0, N).mapToObj(i -> new Long(i % 1000)).toArray(Long[]::new);
         v1 = IntStream.range(0, 1000).mapToObj(i -> new Long(i % 10)).toArray(Long[]::new);
         v2 = IntStream.range(0, 100).mapToObj(i -> new Long(i % 10)).toArray(Long[]::new);
+        v_forSorting_Baseline  = IntStream.range(0, N).mapToObj(i -> new Long(i % 1000)).toArray(Long[]::new);
+        v_forSorting_LStreams  = IntStream.range(0, N).mapToObj(i -> new Long(i % 1000)).toArray(Long[]::new);
+        v_forSorting_Java8Streams  = IntStream.range(0, N).mapToObj(i -> new Long(i % 1000)).toArray(Long[]::new);
     }
 
     @Benchmark
@@ -43,10 +47,25 @@ public class Benchmark_SimpleBoxedPipelines {
     public Long map_filter_fold_Baseline() {
         Long acc = 0L;
         for (int i =0 ; i < v.length ; i++) {
-            if (v[i] % 2 == 0)
-                acc += v[i] * v[i];
+            if (v[i] % 2L == 0L)
+                acc += v[i] + 2L;
         }
         return acc;
+    }
+
+    @Benchmark
+    public Long map_Megamorphic_Baseline() {
+        Long acc = 0L;
+        for (int i =0 ; i < v.length ; i++) {
+            acc += (((((((v[i] + 2L) + 2L) + 2L) + 2L) + 2L) + 2L));
+        }
+        return acc;
+    }
+
+    @Benchmark
+    public Long[] sort_Baseline(){
+        Arrays.sort(v_forSorting_Baseline);
+        return v_forSorting_Baseline;
     }
 
     @Benchmark
@@ -55,7 +74,6 @@ public class Benchmark_SimpleBoxedPipelines {
                 .filter(x -> x % 2L == 0L)
                 .map(x -> x + 2L)
                 .reduce(0L, Long::sum);
-
         return sum;
     }
 
@@ -95,7 +113,6 @@ public class Benchmark_SimpleBoxedPipelines {
                 .map(x -> x + 2L)
                 .map(x -> x + 2L)
                 .reduce(0L, Long::sum);
-
         return sum;
     }
 
@@ -109,25 +126,22 @@ public class Benchmark_SimpleBoxedPipelines {
                 .map(x -> x + 2L)
                 .map(x -> x + 2L)
                 .reduce(0L, Long::sum);
-
         return sum;
     }
 
     @Benchmark
     public Long[] sort_LStreams(){
-        Long[] res = LStream.of(v)
+        Long[] res = LStream.of(v_forSorting_LStreams)
                 .sorted(Comparator.<Long>naturalOrder())
                 .toArray(Long[]::new);
-
         return res;
     }
 
     @Benchmark
     public Long[] sort_Java8Streams(){
-        Long[] res = Stream.of(v)
+        Long[] res = Stream.of(v_forSorting_Java8Streams)
                 .sorted(Comparator.<Long>naturalOrder())
                 .toArray(Long[]::new);
-
         return res;
     }
 }

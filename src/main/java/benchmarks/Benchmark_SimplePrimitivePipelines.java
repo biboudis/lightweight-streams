@@ -1,13 +1,11 @@
 package benchmarks;
 
 import org.openjdk.jmh.annotations.*;
-import streams.LStream;
 import streams.LongLStream;
 
-import java.util.Comparator;
+import java.util.Arrays;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
-import java.util.stream.Stream;
 
 /**
 
@@ -22,13 +20,16 @@ java -Xmx1g -XX:-TieredCompilation -XX:MaxInlineLevel=12 -Dbenchmark.N=1000000 -
 public class Benchmark_SimplePrimitivePipelines {
 
     static final int N =  Integer.getInteger("benchmark.N", 1000);
-    static long[] v, v1,v2;
+    static long[] v, v1,v2, v_forSorting_Baseline ,v_forSorting_LStreams, v_forSorting_Java8Streams;
 
     static {
         // Ok, lets use IntStream for this :P
         v  = IntStream.range(0, N).mapToLong(i -> i % 1000).toArray();
         v1 = IntStream.range(0, 1000).mapToLong(i -> i % 10).toArray();
         v2 = IntStream.range(0, 100).mapToLong(i -> i % 10).toArray();
+        v_forSorting_Baseline  = IntStream.range(0, N).mapToLong(i -> i % 1000).toArray();
+        v_forSorting_LStreams  = IntStream.range(0, N).mapToLong(i -> i % 1000).toArray();
+        v_forSorting_Java8Streams  = IntStream.range(0, N).mapToLong(i -> i % 1000).toArray();
     }
 
     @Benchmark
@@ -45,10 +46,25 @@ public class Benchmark_SimplePrimitivePipelines {
     public long map_filter_fold_Baseline() {
         long acc = 0L;
         for (int i =0 ; i < v.length ; i++) {
-            if (v[i] % 2 == 0)
-                acc += v[i] * v[i];
+            if (v[i] % 2L == 0L)
+                acc += v[i] + 2L;
         }
         return acc;
+    }
+
+    @Benchmark
+    public long map_Megamorphic_Baseline() {
+        long acc = 0L;
+        for (int i =0 ; i < v.length ; i++) {
+            acc += (((((((v[i] + 2L) + 2L) + 2L) + 2L) + 2L) + 2L));
+        }
+        return acc;
+    }
+
+    @Benchmark
+    public long[] sort_Baseline(){
+        Arrays.sort(v_forSorting_Baseline);
+        return v_forSorting_Baseline;
     }
 
     @Benchmark
@@ -118,19 +134,17 @@ public class Benchmark_SimplePrimitivePipelines {
 
     @Benchmark
     public long[] sort_LStreams(){
-        long[] res = LongLStream.of(v)
+        long[] res = LongLStream.of(v_forSorting_LStreams)
                 .sorted()
                 .toArray();
-
         return res;
     }
 
     @Benchmark
     public long[] sort_Java8Streams(){
-        long[] res = LongStream.of(v)
+        long[] res = LongStream.of(v_forSorting_Java8Streams)
                 .sorted()
                 .toArray();
-
         return res;
     }
 }
