@@ -1,6 +1,7 @@
 package streams;
 
 import com.google.common.primitives.Longs;
+
 import java.util.ArrayList;
 import java.util.function.*;
 
@@ -9,16 +10,16 @@ import java.util.function.*;
  * Created by bibou on 9/23/14.
  */
 public class LongLPipeline implements LongLStream {
-    private Consumer<LongFunction<Boolean>> streamf;
+    private Consumer<LongPredicate> streamf;
 
-    public LongLPipeline(Consumer<LongFunction<Boolean>> tryAdvance) {
+    public LongLPipeline(Consumer<LongPredicate> tryAdvance) {
         this.streamf = tryAdvance;
     }
 
     @Override
     public LongLStream map(LongUnaryOperator f) {
-        Consumer<LongFunction<Boolean>> consumer = (iterf) ->
-                streamf.accept(value -> iterf.apply(f.applyAsLong(value)));
+        Consumer<LongPredicate> consumer = (iterf) ->
+                streamf.accept(value -> iterf.test(f.applyAsLong(value)));
 
         return new LongLPipeline(consumer);
     }
@@ -33,27 +34,27 @@ public class LongLPipeline implements LongLStream {
 
     @Override
     public LongLStream filter(LongPredicate predicate) {
-        Consumer<LongFunction<Boolean>> consumer = (iterf) ->
-                streamf.accept(value -> predicate.test(value) ? iterf.apply(value) : true);
+        Consumer<LongPredicate> consumer = (iterf) ->
+                streamf.accept(value -> predicate.test(value) ? iterf.test(value) : true);
 
         return new LongLPipeline(consumer);
     }
 
     @Override
     public long reduce(long identity, LongBinaryOperator accumulator) {
-        final LongBox state = new LongBox(identity);
+        LongCell state = new LongCell(identity);
 
         streamf.accept(value -> {
-            state.setValue(accumulator.applyAsLong(state.getValue(), value));
+            state.value = accumulator.applyAsLong(state.value, value);
             return true;
         });
 
-        return state.getValue();
+        return state.value;
     }
 
     @Override
     public LongLStream flatMap(LongFunction<? extends LongLStream> f) {
-        Consumer<LongFunction<Boolean>> consumer = (iterf) ->
+        Consumer<LongPredicate> consumer = (iterf) ->
                 streamf.accept(value -> {
                     LongLStream streamfInternal = f.apply(value);
                     streamfInternal.getTryAdvanceLambda().accept(iterf);
@@ -81,7 +82,7 @@ public class LongLPipeline implements LongLStream {
 
     @Override
     public long[] toArray() {
-        ArrayList<Long> buffer = new ArrayList<>();
+        ArrayList<Long> buffer = new ArrayList<Long>();
 
         streamf.accept(value -> {
             buffer.add(value);
@@ -99,7 +100,7 @@ public class LongLPipeline implements LongLStream {
     }
 
     @Override
-    public Consumer<LongFunction<Boolean>> getTryAdvanceLambda() {
+    public Consumer<LongPredicate> getTryAdvanceLambda() {
         return streamf;
     }
 }

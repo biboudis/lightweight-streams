@@ -10,11 +10,11 @@ public interface LongLStream {
     public static LongLStream of(long... values) {
         long[] src = values;
 
-        Consumer<LongFunction<Boolean>> tryAdvance = (f) -> {
+        Consumer<LongPredicate> tryAdvance = (f) -> {
             int i = 0;
             boolean next = true;
             while (i < src.length && next) {
-                next = f.apply(src[i]);
+                next = f.test(src[i]);
                 i++;
             }
         };
@@ -38,6 +38,6 @@ public interface LongLStream {
 
     long[] toArray();
 
-    Consumer<LongFunction<Boolean>> getTryAdvanceLambda();
+    Consumer<LongPredicate> getTryAdvanceLambda();
 
 }

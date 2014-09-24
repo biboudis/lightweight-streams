@@ -10,11 +10,11 @@ public interface LStream<T> {
     public static<T> LStream<T> of(T... values) {
         List<T> src = Arrays.asList(values);
 
-        Consumer<Function<T, Boolean>> tryAdvance = (f) -> {
+        Consumer<Predicate<T>> tryAdvance = (f) -> {
             int i = 0;
             boolean next = true;
             while (i < src.size() && next) {
-                next = f.apply(src.get(i));
+                next = f.test(src.get(i));
                 i++;
             }
         };
@@ -38,5 +38,5 @@ public interface LStream<T> {
 
     T[] toArray(IntFunction<T[]> generator);
 
-    Consumer<Function<T, Boolean>> getTryAdvanceLambda();
+    Consumer<Predicate<T>> getTryAdvanceLambda();
 }

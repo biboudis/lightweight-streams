@@ -55,8 +55,8 @@ public class Benchmark_SimplePrimitivePipelines {
     @Benchmark
     public long map_Megamorphic_Baseline() {
         long acc = 0L;
-        for (int i =0 ; i < v.length ; i++) {
-            acc += (((((((v[i] + 2L) + 2L) + 2L) + 2L) + 2L) + 2L));
+        for (int i = 0 ; i < v.length ; i++) {
+            acc += (v[i] + 2L + 2L + 2L + 2L + 2L + 2L);
         }
         return acc;
     }
@@ -73,7 +73,6 @@ public class Benchmark_SimplePrimitivePipelines {
                 .filter(x -> x % 2L == 0L)
                 .map(x -> x + 2L)
                 .reduce(0L, Long::sum);
-
         return sum;
     }
 
@@ -83,7 +82,6 @@ public class Benchmark_SimplePrimitivePipelines {
                 .filter(x -> x % 2L == 0L)
                 .map(x -> x + 2L)
                 .reduce(0L, Long::sum);
-
         return sum;
     }
 
@@ -92,7 +90,6 @@ public class Benchmark_SimplePrimitivePipelines {
         long cart = LongStream.of(v1)
                 .flatMap(d -> LongStream.of(v2).map(dP -> dP * d))
                 .reduce(0L, Long::sum);
-
         return cart;
     }
 
@@ -114,7 +111,6 @@ public class Benchmark_SimplePrimitivePipelines {
                 .map(x -> x + 2L)
                 .map(x -> x + 2L)
                 .reduce(0L, Long::sum);
-
         return sum;
     }
 
@@ -128,7 +124,6 @@ public class Benchmark_SimplePrimitivePipelines {
                 .map(x -> x + 2L)
                 .map(x -> x + 2L)
                 .reduce(0L, Long::sum);
-
         return sum;
     }
 

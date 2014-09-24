@@ -5,64 +5,59 @@ import java.util.function.*;
 
 public class LPipeline<T> implements LStream<T>  {
 
-    public Consumer<Function<T, Boolean>> getTryAdvanceLambda() {
+    public Consumer<Predicate<T>> getTryAdvanceLambda() {
         return streamf;
     }
 
-    private Consumer<Function<T, Boolean>> streamf;
+    private Consumer<Predicate<T>> streamf;
 
-    public LPipeline(Consumer<Function<T, Boolean>> tryAdvanceFunction) {
+    public LPipeline(Consumer<Predicate<T>> tryAdvanceFunction) {
         this.streamf = tryAdvanceFunction;
     }
 
     @Override
     public <R> LStream<R> map(Function<T, R> f) {
-        Consumer<Function<R, Boolean>> consumer = (iterf) ->
-                streamf.accept(value -> iterf.apply(f.apply(value)));
+        Consumer<Predicate<R>> consumer = (iterf) ->
+                streamf.accept(value -> iterf.test(f.apply(value)));
 
         return new LPipeline<R>(consumer);
     }
 
     @Override
     public LStream<T> filter(Predicate<T> predicate) {
-        Consumer<Function<T, Boolean>> consumer = (iterf) ->
-                streamf.accept(value -> predicate.test(value) ? iterf.apply(value) : true);
+        Consumer<Predicate<T>> consumer = (iterf) ->
+                streamf.accept(value -> predicate.test(value) ? iterf.test(value) : true);
 
         return new LPipeline<T>(consumer);
     }
 
     @Override
     public T reduce(T identity, BinaryOperator<T> accumulator) {
-        // final AtomicReference<T> ref = new AtomicReference<>(identity);
-
-        final Box<T> state = new Box<T>(identity);
+        final RefCell<T> state = new RefCell<T>(identity);
 
         streamf.accept(value -> {
-            //ref.getAndAccumulate(identity, accumulator);
-            state.setValue(accumulator.apply(state.getValue(), value));
+            state.value = accumulator.apply(state.value, value);
             return true;
         });
 
-        return state.getValue();
+        return state.value;
     }
 
+    @Override
     public <U> U reduce(U identity, BiFunction<U,? super T,U> accumulator) {
-        // final AtomicReference<T> ref = new AtomicReference<>(state);
-
-        final Box<U> state = new Box<U>(identity);
+        final RefCell<U> state = new RefCell<U>(identity);
 
         streamf.accept(value -> {
-            //ref.getAndAccumulate(value, folder);
-            state.setValue(accumulator.apply(state.getValue(), value));
+            state.value = accumulator.apply(state.value, value);
             return true;
         });
 
-        return state.getValue();
+        return state.value;
     }
 
     @Override
     public <R> LStream<R> flatMap(Function<T, LStream<R>> f) {
-        Consumer<Function<R, Boolean>> consumer = (iterf) ->
+        Consumer<Predicate<R>> consumer = (iterf) ->
                 streamf.accept(value -> {
                     LStream<R> streamfInternal = f.apply(value);
                     streamfInternal.getTryAdvanceLambda().accept(iterf);
@@ -75,7 +70,7 @@ public class LPipeline<T> implements LStream<T>  {
     @Override
     public LStream<T> sorted(Comparator<? super T> comparator) {
 
-        ArrayList<T> buffer = new ArrayList<>();
+        ArrayList<T> buffer = new ArrayList<T>();
 
         streamf.accept(value -> {
             buffer.add(value);
@@ -93,7 +88,7 @@ public class LPipeline<T> implements LStream<T>  {
 
     @Override
     public T[] toArray(IntFunction<T[]> generator) {
-        ArrayList<T> buffer = new ArrayList<>();
+        ArrayList<T> buffer = new ArrayList<T>();
 
         buffer = reduce(buffer, (accList, value) -> {
             accList.add(value);

@@ -57,7 +57,7 @@ public class Benchmark_SimpleBoxedPipelines {
     public Long map_Megamorphic_Baseline() {
         Long acc = 0L;
         for (int i =0 ; i < v.length ; i++) {
-            acc += (((((((v[i] + 2L) + 2L) + 2L) + 2L) + 2L) + 2L));
+            acc += (v[i] + 2L + 2L + 2L + 2L + 2L + 2L);
         }
         return acc;
     }
