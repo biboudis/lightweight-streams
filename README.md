@@ -10,6 +10,7 @@ are applied, effectively declare the transformations needed to be applied when
 an eager combinator is met. 
 
 ``` source - lazy - lazy - lazy - eager ```
+
 As in Java, boxing is avoided with hand specialized
 combinators (e.g. ```LongLStream```). 
 
