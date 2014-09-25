@@ -29,6 +29,7 @@ java -XX:-TieredCompilation -jar target/microbenchmarks.jar -wi 15 -i 10 -f 1 -g
 ```
 ### Measurements
 *TL;DR* 
+
 With large MaxInlineLevel, LStreams are slightly better in the 
 cartesian product case, they are considerably slower in the sort case 
 due to the sorting algorithm and in all other cases, numbers are similar.
