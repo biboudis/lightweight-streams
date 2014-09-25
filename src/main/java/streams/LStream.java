@@ -26,7 +26,7 @@ public interface LStream<T> {
 
     LStream<T> filter (Predicate<T> predicate);
 
-    T reduce (T state, BinaryOperator<T> folder);
+    T reduce (T state, BinaryOperator<T> accumulator);
 
     <U> U reduce(U identity, BiFunction<U,? super T,U> accumulator);
 
