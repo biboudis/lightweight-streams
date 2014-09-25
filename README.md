@@ -7,10 +7,11 @@ without iterators/spliterators and is based on lambdas/continuation-passing
 only. The programming model consists of combinators that wrap a source with a
 datatype which implements the ```LStream``` interface. Any combinators that
 are applied, effectively declare the transformations needed to be applied when
-an eager combinator is met. As in Java, boxing is avoided with hand specialized
-combinators (e.g. ```LongLStream```).
+an eager combinator is met. 
 
 ``` source - lazy - lazy - lazy - eager ```
+As in Java, boxing is avoided with hand specialized
+combinators (e.g. ```LongLStream```). 
 
 The purpose of this library is to help with the study of the inlining decisions
 that the JVM makes, when following the j.u.stream implementation strategy.
