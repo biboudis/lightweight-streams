@@ -5,14 +5,14 @@ import java.util.function.*;
 
 public class LPipeline<T> implements LStream<T>  {
 
-    public Consumer<Predicate<T>> getTryAdvanceLambda() {
+    public Consumer<Predicate<T>> getStreamF() {
         return streamf;
     }
 
     private Consumer<Predicate<T>> streamf;
 
-    public LPipeline(Consumer<Predicate<T>> tryAdvanceFunction) {
-        this.streamf = tryAdvanceFunction;
+    public LPipeline(Consumer<Predicate<T>> streamf) {
+        this.streamf = streamf;
     }
 
     @Override
@@ -60,7 +60,7 @@ public class LPipeline<T> implements LStream<T>  {
         Consumer<Predicate<R>> consumer = (iterf) ->
                 streamf.accept(value -> {
                     LStream<R> streamfInternal = f.apply(value);
-                    streamfInternal.getTryAdvanceLambda().accept(iterf);
+                    streamfInternal.getStreamF().accept(iterf);
                     return true;
                 });
 

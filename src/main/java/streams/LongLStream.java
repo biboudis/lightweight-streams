@@ -10,7 +10,7 @@ public interface LongLStream {
     public static LongLStream of(long... values) {
         long[] src = values;
 
-        Consumer<LongPredicate> tryAdvance = (f) -> {
+        Consumer<LongPredicate> streamf = (f) -> {
             int i = 0;
             boolean next = true;
             while (i < src.length && next) {
@@ -19,7 +19,7 @@ public interface LongLStream {
             }
         };
 
-        return new LongLPipeline (tryAdvance);
+        return new LongLPipeline (streamf);
     }
 
     LongLStream map(LongUnaryOperator f);
@@ -38,6 +38,6 @@ public interface LongLStream {
 
     long[] toArray();
 
-    Consumer<LongPredicate> getTryAdvanceLambda();
+    Consumer<LongPredicate> getStreamF();
 
 }

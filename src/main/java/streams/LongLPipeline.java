@@ -12,8 +12,8 @@ import java.util.function.*;
 public class LongLPipeline implements LongLStream {
     private Consumer<LongPredicate> streamf;
 
-    public LongLPipeline(Consumer<LongPredicate> tryAdvance) {
-        this.streamf = tryAdvance;
+    public LongLPipeline(Consumer<LongPredicate> streamf) {
+        this.streamf = streamf;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class LongLPipeline implements LongLStream {
         Consumer<LongPredicate> consumer = (iterf) ->
                 streamf.accept(value -> {
                     LongLStream streamfInternal = f.apply(value);
-                    streamfInternal.getTryAdvanceLambda().accept(iterf);
+                    streamfInternal.getStreamF().accept(iterf);
                     return true;
                 });
 
@@ -100,7 +100,7 @@ public class LongLPipeline implements LongLStream {
     }
 
     @Override
-    public Consumer<LongPredicate> getTryAdvanceLambda() {
+    public Consumer<LongPredicate> getStreamF() {
         return streamf;
     }
 }

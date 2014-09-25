@@ -10,7 +10,7 @@ public interface LStream<T> {
     public static<T> LStream<T> of(T... values) {
         List<T> src = Arrays.asList(values);
 
-        Consumer<Predicate<T>> tryAdvance = (f) -> {
+        Consumer<Predicate<T>> streamf = (f) -> {
             int i = 0;
             boolean next = true;
             while (i < src.size() && next) {
@@ -19,7 +19,7 @@ public interface LStream<T> {
             }
         };
 
-        return new LPipeline<T>(tryAdvance);
+        return new LPipeline<T>(streamf);
     }
 
     <R> LStream<R> map (Function<T,R> f);
@@ -38,5 +38,5 @@ public interface LStream<T> {
 
     T[] toArray(IntFunction<T[]> generator);
 
-    Consumer<Predicate<T>> getTryAdvanceLambda();
+    Consumer<Predicate<T>> getStreamF();
 }
