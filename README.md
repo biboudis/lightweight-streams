@@ -28,6 +28,9 @@ mvn clean package -Dskiptests
 java -XX:-TieredCompilation -jar target/microbenchmarks.jar -wi 15 -i 10 -f 1 -gc -tu ms ".*"
 ```
 ### Measurements
+TL;DR With large MaxInlineLevel ```LStreams``` are slightly better in the 
+cartesian product case, sort is affected by the sorting algorithm and comparable in other cases.
+
 You can take a look at the most current measurements, that include baseline, 
 LStreams and Java 8 Streams in the [measurements](measurements) file. 
  
