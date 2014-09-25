@@ -46,3 +46,4 @@ LStreams and Java 8 Streams in the [measurements](measurements) file.
 ### Dependencies
 * [JMH](http://openjdk.java.net/projects/code-tools/jmh/)
 * [junit](http://junit.org/)
+* [Guava](https://code.google.com/p/guava-libraries/)
