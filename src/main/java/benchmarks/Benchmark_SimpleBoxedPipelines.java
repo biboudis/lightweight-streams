@@ -26,8 +26,8 @@ public class Benchmark_SimpleBoxedPipelines {
     static {
         // Ok, lets use IntStream for this :P
         v  = IntStream.range(0, N).mapToObj(i -> new Long(i % 1000)).toArray(Long[]::new);
-        v1 = IntStream.range(0, 1000).mapToObj(i -> new Long(i % 10)).toArray(Long[]::new);
-        v2 = IntStream.range(0, 100).mapToObj(i -> new Long(i % 10)).toArray(Long[]::new);
+        v1 = IntStream.range(0, 100000).mapToObj(i -> new Long(i % 10)).toArray(Long[]::new);
+        v2 = IntStream.range(0, 10).mapToObj(i -> new Long(i % 10)).toArray(Long[]::new);
         v_forSorting_Baseline  = IntStream.range(0, N).mapToObj(i -> new Long(i % 1000)).toArray(Long[]::new);
         v_forSorting_LStreams  = IntStream.range(0, N).mapToObj(i -> new Long(i % 1000)).toArray(Long[]::new);
         v_forSorting_Java8Streams  = IntStream.range(0, N).mapToObj(i -> new Long(i % 1000)).toArray(Long[]::new);

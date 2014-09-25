@@ -25,8 +25,8 @@ public class Benchmark_SimplePrimitivePipelines {
     static {
         // Ok, lets use IntStream for this :P
         v  = IntStream.range(0, N).mapToLong(i -> i % 1000).toArray();
-        v1 = IntStream.range(0, 1000).mapToLong(i -> i % 10).toArray();
-        v2 = IntStream.range(0, 100).mapToLong(i -> i % 10).toArray();
+        v1 = IntStream.range(0, 100000).mapToLong(i -> i % 10).toArray();
+        v2 = IntStream.range(0, 10).mapToLong(i -> i % 10).toArray();
         v_forSorting_Baseline  = IntStream.range(0, N).mapToLong(i -> i % 1000).toArray();
         v_forSorting_LStreams  = IntStream.range(0, N).mapToLong(i -> i % 1000).toArray();
         v_forSorting_Java8Streams  = IntStream.range(0, N).mapToLong(i -> i % 1000).toArray();
