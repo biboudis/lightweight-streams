@@ -36,7 +36,7 @@ cartesian product case, they are considerably slower in the sort case
 due to the sorting algorithm and in all other cases, numbers are similar.
 
 You can take a look at the most current measurements, that include baseline, 
-LStreams and Java 8 Streams in the [measurements](measurements) file. 
+LStreams and Java 8 Streams in the measurements files: [HotSpot](measurements-hotspot.md), [Graal](measurements-graal.md). 
  
 ### References
 * [Clash of the Lambdas](http://biboudis.github.io/clashofthelambdas/)

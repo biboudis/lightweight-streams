@@ -1,7 +1,8 @@
-# java -Xmx1g -XX:-TieredCompilation -XX:MaxInlineLevel=12 -Dbenchmark.N=1000000 -jar target/microbenchmarks.jar -wi 10 -i 5 -f 1 -gc -tu ms ".*"
+```java -Xmx1g -XX:-TieredCompilation -XX:MaxInlineLevel=12 -Dbenchmark.N=1000000 -jar target/microbenchmarks.jar -wi 10 -i 5 -f 1 -gc -tu ms ".*"```
 
-# OpenJDK 64-Bit Graal VM (build 25.0-b63-internal-graal-0.6-dev, mixed mode)
+```OpenJDK 64-Bit Graal VM (build 25.0-b63-internal-graal-0.6-dev, mixed mode)```
 
+```
 Benchmark                                                                               Mode  Samples    Score  Score error  Units
 b.Benchmark_SimpleBoxedPipelines.cart_Baseline                                          avgt        5    5.504        0.611  ms/op
 b.Benchmark_SimpleBoxedPipelines.cart_Java8Streams                                      avgt        5   21.945        7.091  ms/op
@@ -46,3 +47,4 @@ b.Benchmark_SimplePrimitivePipelines.map_megamorphic_LStreams_manually_inlined_4
 b.Benchmark_SimplePrimitivePipelines.map_megamorphic_LStreams_manually_inlined_6        avgt        5    9.943        0.201  ms/op
 b.Benchmark_SimplePrimitivePipelines.sort_Java8Streams                                  avgt        5   29.268        2.673  ms/op
 b.Benchmark_SimplePrimitivePipelines.sort_LStreams                                      avgt        5  114.545       24.458  ms/op
+```

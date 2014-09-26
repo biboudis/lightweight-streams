@@ -1,7 +1,8 @@
-# java -Xmx1g -XX:-TieredCompilation -XX:MaxInlineLevel=12 -Dbenchmark.N=1000000 -jar target/microbenchmarks.jar -wi 5 -i 5 -f 2 -gc -tu ms ".*"
+```java -Xmx1g -XX:-TieredCompilation -XX:MaxInlineLevel=12 -Dbenchmark.N=1000000 -jar target/microbenchmarks.jar -wi 5 -i 5 -f 2 -gc -tu ms ".*"```
 
-# Java HotSpot(TM) 64-Bit Server VM (build 25.20-b23, mixed mode)
+```Java HotSpot(TM) 64-Bit Server VM (build 25.20-b23, mixed mode)```
 
+```
 Benchmark                                                                               Mode  Samples   Score  Score error  Units
 b.Benchmark_SimpleBoxedPipelines.cart_Baseline                                          avgt       10   5.971        0.496  ms/op
 b.Benchmark_SimpleBoxedPipelines.cart_Java8Streams                                      avgt       10  13.449        0.565  ms/op
@@ -47,3 +48,4 @@ b.Benchmark_SimplePrimitivePipelines.map_megamorphic_LStreams_manually_inlined_6
 b.Benchmark_SimplePrimitivePipelines.sort_Baseline                                      avgt       10   9.428        0.950  ms/op
 b.Benchmark_SimplePrimitivePipelines.sort_Java8Streams                                  avgt       10  33.311        0.306  ms/op
 b.Benchmark_SimplePrimitivePipelines.sort_LStreams                                      avgt       10  82.332        4.506  ms/op
+```
