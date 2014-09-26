@@ -38,8 +38,8 @@ due to the sorting algorithm and in all other cases, numbers are similar.
 You can take a look at the most current measurements, that include baseline, 
 LStreams and Java 8 Streams in the measurements files: 
 
-* [HotSpot benchmarks](measurements-hotspot.md)
-* [Graal benchmarks](measurements-graal.md)
+* [HotSpot benchmarks](measurements-hotspot)
+* [Graal benchmarks](measurements-graal)
  
 ### References
 * [Clash of the Lambdas](http://biboudis.github.io/clashofthelambdas/)
