@@ -138,7 +138,7 @@ public class Benchmark_SimplePrimitivePipelines {
     }
 
     @Benchmark
-    public long map_megamorphic_LStreams_2_manually_inlined(){
+    public long map_megamorphic_LStreams_manually_inlined_2(){
         LongUnaryOperator lambda = x -> x + 2L;
         long sum = LongLStream.of(v)
                 .map(lambda)
@@ -148,7 +148,7 @@ public class Benchmark_SimplePrimitivePipelines {
     }
 
     @Benchmark
-    public long map_megamorphic_LStreams_4_manually_inlined(){
+    public long map_megamorphic_LStreams_manually_inlined_4(){
         LongUnaryOperator lambda = x -> x + 2L;
         long sum = LongLStream.of(v)
                 .map(lambda)
@@ -160,7 +160,7 @@ public class Benchmark_SimplePrimitivePipelines {
     }
 
     @Benchmark
-    public long map_megamorphic_LStreams_6_manually_inlined(){
+    public long map_megamorphic_LStreams_manually_inlined_6(){
         LongUnaryOperator lambda = x -> x + 2L;
         long sum = LongLStream.of(v)
                 .map(lambda)
@@ -207,7 +207,7 @@ public class Benchmark_SimplePrimitivePipelines {
     }
 
     @Benchmark
-    public long map_megamorphic_Java8Streams_2_manually_inlined(){
+    public long map_megamorphic_Java8Streams_manually_inlined_2(){
         LongUnaryOperator lambda = x -> x + 2L;
         long sum = LongStream.of(v)
                 .map(lambda)
@@ -217,7 +217,7 @@ public class Benchmark_SimplePrimitivePipelines {
     }
 
     @Benchmark
-    public long map_megamorphic_Java8Streams_4_manually_inlined(){
+    public long map_megamorphic_Java8Streams_manually_inlined_4(){
         LongUnaryOperator lambda = x -> x + 2L;
         long sum = LongStream.of(v)
                 .map(lambda)
@@ -229,7 +229,7 @@ public class Benchmark_SimplePrimitivePipelines {
     }
 
     @Benchmark
-    public long map_megamorphic_Java8Streams_6_manually_inlined(){
+    public long map_megamorphic_Java8Streams_manually_inlined_6(){
         LongUnaryOperator lambda = x -> x + 2L;
         long sum = LongStream.of(v)
                 .map(lambda)
