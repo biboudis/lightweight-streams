@@ -1,4 +1,5 @@
 import benchmarks.Benchmark_SimpleBoxedPipelines;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -8,9 +9,14 @@ public class Test_SimpleBoxedPipelines {
 
     static Benchmark_SimpleBoxedPipelines __benchClass = new Benchmark_SimpleBoxedPipelines();
 
+    @Before
+    public void setUp() throws Exception {
+        __benchClass.setUp();
+    }
+
     @Test
     public void Test_cart_Boxed(){
-        assertEquals (__benchClass.cart_Java8Streams(), __benchClass.cart_LStreams()) ;
+        assertEquals(__benchClass.cart_Java8Streams(), __benchClass.cart_LStreams()) ;
         assertEquals (__benchClass.cart_Java8Streams(), __benchClass.cart_Baseline());
     }
 

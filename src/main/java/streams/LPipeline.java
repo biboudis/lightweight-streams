@@ -3,6 +3,10 @@ package streams;
 import java.util.*;
 import java.util.function.*;
 
+/**
+ * Created by bibou on 9/23/14.
+ */
+
 public class LPipeline<T> implements LStream<T>  {
 
     public Consumer<Predicate<T>> getStreamF() {
@@ -40,8 +44,7 @@ public class LPipeline<T> implements LStream<T>  {
             return true;
         });
 
-        return state.value;
-    }
+        return state.value;    }
 
     @Override
     public <U> U reduce(U identity, BiFunction<U,? super T,U> accumulator) {

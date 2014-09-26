@@ -19,10 +19,12 @@ java -Xmx1g -XX:-TieredCompilation -XX:MaxInlineLevel=12 -Dbenchmark.N=1000000 -
 @BenchmarkMode(Mode.AverageTime)
 public class Benchmark_SimplePrimitivePipelines {
 
-    static final int N =  Integer.getInteger("benchmark.N", 1000);
-    static long[] v, v1,v2, v_forSorting_Baseline ,v_forSorting_LStreams, v_forSorting_Java8Streams;
+    private static int N =  Integer.getInteger("benchmark.N", 1000);
 
-    static {
+    public long[] v, v1,v2, v_forSorting_Baseline ,v_forSorting_LStreams, v_forSorting_Java8Streams;
+
+    @Setup
+    public void setUp() {
         // Ok, lets use IntStream for this :P
         v  = IntStream.range(0, N).mapToLong(i -> i % 1000).toArray();
         v1 = IntStream.range(0, 100000).mapToLong(i -> i % 10).toArray();

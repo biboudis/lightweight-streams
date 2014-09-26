@@ -1,26 +1,27 @@
-java -Xmx1g -XX:-TieredCompilation -XX:MaxInlineLevel=100 -Dbenchmark.N=1000000 -jar target/microbenchmarks.jar -wi 5 -i 5 -f 1 -gc -tu ms ".*"
+java -XX:+UnlockDiagnosticVMOptions -Xmx1g -XX:-TieredCompilation -XX:MaxInlineLevel=12 -Dbenchmark.N=1000000 -jar target/microbenchmarks.jar -wi 5 -i 5 -f 3 -gc -tu ms ".*"
 
-b.Benchmark_SimpleBoxedPipelines.cart_Baseline                       avgt        5   16.542        2.680  ms/op
-b.Benchmark_SimpleBoxedPipelines.cart_Java8Streams                   avgt        5   37.271        0.581  ms/op
-b.Benchmark_SimpleBoxedPipelines.cart_LStreams                       avgt        5   32.806        3.898  ms/op
-b.Benchmark_SimpleBoxedPipelines.map_Megamorphic_Baseline            avgt        5   12.791        2.292  ms/op
-b.Benchmark_SimpleBoxedPipelines.map_Megamorphic_Java8Streams        avgt        5   91.436        0.952  ms/op
-b.Benchmark_SimpleBoxedPipelines.map_Megamorphic_LStreams            avgt        5   90.283        3.149  ms/op
-b.Benchmark_SimpleBoxedPipelines.map_filter_fold_Baseline            avgt        5   15.358        0.469  ms/op
-b.Benchmark_SimpleBoxedPipelines.map_filter_fold_Java8Streams        avgt        5   19.595        2.528  ms/op
-b.Benchmark_SimpleBoxedPipelines.map_filter_fold_LStreams            avgt        5   22.807        0.976  ms/op
-b.Benchmark_SimpleBoxedPipelines.sort_Baseline                       avgt        5   15.452        1.808  ms/op
-b.Benchmark_SimpleBoxedPipelines.sort_Java8Streams                   avgt        5  131.353       28.166  ms/op
-b.Benchmark_SimpleBoxedPipelines.sort_LStreams                       avgt        5  163.719        7.499  ms/op
-b.Benchmark_SimplePrimitivePipelines.cart_Baseline                   avgt        5    4.488        0.526  ms/op
-b.Benchmark_SimplePrimitivePipelines.cart_Java8Streams               avgt        5   17.346        1.508  ms/op
-b.Benchmark_SimplePrimitivePipelines.cart_LStreams                   avgt        5    9.920        0.283  ms/op
-b.Benchmark_SimplePrimitivePipelines.map_Megamorphic_Baseline        avgt        5    2.183        0.401  ms/op
-b.Benchmark_SimplePrimitivePipelines.map_Megamorphic_Java8Streams    avgt        5   51.744        1.627  ms/op
-b.Benchmark_SimplePrimitivePipelines.map_Megamorphic_LStreams        avgt        5   59.144        8.579  ms/op
-b.Benchmark_SimplePrimitivePipelines.map_filter_fold_Baseline        avgt        5    5.733        0.625  ms/op
-b.Benchmark_SimplePrimitivePipelines.map_filter_fold_Java8Streams    avgt        5    7.531        1.100  ms/op
-b.Benchmark_SimplePrimitivePipelines.map_filter_fold_LStreams        avgt        5    7.616        0.492  ms/op
-b.Benchmark_SimplePrimitivePipelines.sort_Baseline                   avgt        5   34.019        0.565  ms/op
-b.Benchmark_SimplePrimitivePipelines.sort_Java8Streams               avgt        5   88.508        3.115  ms/op
-b.Benchmark_SimplePrimitivePipelines.sort_LStreams                   avgt        5  176.369       14.164  ms/op
+Benchmark                                                            Mode  Samples   Score  Score error  Units
+b.Benchmark_SimpleBoxedPipelines.cart_Baseline                       avgt       15   6.020        0.189  ms/op
+b.Benchmark_SimpleBoxedPipelines.cart_Java8Streams                   avgt       15  14.346        0.581  ms/op
+b.Benchmark_SimpleBoxedPipelines.cart_LStreams                       avgt       15  12.285        0.767  ms/op
+b.Benchmark_SimpleBoxedPipelines.map_Megamorphic_Baseline            avgt       15   8.430        0.076  ms/op
+b.Benchmark_SimpleBoxedPipelines.map_Megamorphic_Java8Streams        avgt       15  72.161       17.543  ms/op
+b.Benchmark_SimpleBoxedPipelines.map_Megamorphic_LStreams            avgt       15  51.630        2.928  ms/op
+b.Benchmark_SimpleBoxedPipelines.map_filter_fold_Baseline            avgt       15   5.744        0.253  ms/op
+b.Benchmark_SimpleBoxedPipelines.map_filter_fold_Java8Streams        avgt       15   9.898        0.862  ms/op
+b.Benchmark_SimpleBoxedPipelines.map_filter_fold_LStreams            avgt       15  11.296        1.113  ms/op
+b.Benchmark_SimpleBoxedPipelines.sort_Baseline                       avgt       15  12.188        0.307  ms/op
+b.Benchmark_SimpleBoxedPipelines.sort_Java8Streams                   avgt       15  53.788        3.560  ms/op
+b.Benchmark_SimpleBoxedPipelines.sort_LStreams                       avgt       15  81.880        2.692  ms/op
+b.Benchmark_SimplePrimitivePipelines.cart_Baseline                   avgt       15   0.596        0.040  ms/op
+b.Benchmark_SimplePrimitivePipelines.cart_Java8Streams               avgt       15   7.391        0.735  ms/op
+b.Benchmark_SimplePrimitivePipelines.cart_LStreams                   avgt       15   3.294        0.235  ms/op
+b.Benchmark_SimplePrimitivePipelines.map_Megamorphic_Baseline        avgt       15   0.676        0.007  ms/op
+b.Benchmark_SimplePrimitivePipelines.map_Megamorphic_Java8Streams    avgt       15  28.728        0.323  ms/op
+b.Benchmark_SimplePrimitivePipelines.map_Megamorphic_LStreams        avgt       15  28.030        0.421  ms/op
+b.Benchmark_SimplePrimitivePipelines.map_filter_fold_Baseline        avgt       15   1.091        0.051  ms/op
+b.Benchmark_SimplePrimitivePipelines.map_filter_fold_Java8Streams    avgt       15   1.878        0.027  ms/op
+b.Benchmark_SimplePrimitivePipelines.map_filter_fold_LStreams        avgt       15   1.913        0.029  ms/op
+b.Benchmark_SimplePrimitivePipelines.sort_Baseline                   avgt       15   8.625        0.071  ms/op
+b.Benchmark_SimplePrimitivePipelines.sort_Java8Streams               avgt       15  32.804        0.360  ms/op
+b.Benchmark_SimplePrimitivePipelines.sort_LStreams                   avgt       15  78.875        2.561  ms/op

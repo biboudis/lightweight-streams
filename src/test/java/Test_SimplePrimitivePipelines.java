@@ -1,4 +1,5 @@
 import benchmarks.Benchmark_SimplePrimitivePipelines;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -7,6 +8,11 @@ import static org.junit.Assert.assertEquals;
 public class Test_SimplePrimitivePipelines {
 
     static Benchmark_SimplePrimitivePipelines __benchClass = new Benchmark_SimplePrimitivePipelines();
+
+    @Before
+    public void setUp() throws Exception {
+        __benchClass.setUp();
+    }
 
     @Test
     public void Test_cart_PrimitiveLong(){
