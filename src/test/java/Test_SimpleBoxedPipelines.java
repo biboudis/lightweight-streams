@@ -28,8 +28,8 @@ public class Test_SimpleBoxedPipelines {
 
     @Test
     public void Test_map_Megamorphic_Boxed(){
-        assertEquals (__benchClass.map_Megamorphic_Java8Streams(), __benchClass.map_Megamorphic_LStreams()) ;
-        assertEquals (__benchClass.map_Megamorphic_Java8Streams(), __benchClass.map_Megamorphic_Baseline());
+        assertEquals (__benchClass.map_megamorphic_Java8Streams_6(), __benchClass.map_megamorphic_LStreams_6()) ;
+        assertEquals (__benchClass.map_megamorphic_Java8Streams_6(), __benchClass.map_megamorphic_Baseline_6());
     }
 
     @Test

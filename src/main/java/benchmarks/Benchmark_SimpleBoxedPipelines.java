@@ -5,6 +5,7 @@ import streams.LStream;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.function.UnaryOperator;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -56,7 +57,7 @@ public class Benchmark_SimpleBoxedPipelines {
     }
 
     @Benchmark
-    public Long map_Megamorphic_Baseline() {
+    public Long map_megamorphic_Baseline_6() {
         Long acc = 0L;
         for (int i =0 ; i < v.length ; i++) {
             acc += (v[i] + 2L + 2L + 2L + 2L + 2L + 2L);
@@ -106,7 +107,27 @@ public class Benchmark_SimpleBoxedPipelines {
     }
 
     @Benchmark
-    public Long map_Megamorphic_LStreams(){
+    public Long map_megamorphic_LStreams_2(){
+        Long sum = LStream.of(v)
+                .map(x -> x + 2L)
+                .map(x -> x + 2L)
+                .reduce(0L, Long::sum);
+        return sum;
+    }
+
+    @Benchmark
+    public Long map_megamorphic_LStreams_4(){
+        Long sum = LStream.of(v)
+                .map(x -> x + 2L)
+                .map(x -> x + 2L)
+                .map(x -> x + 2L)
+                .map(x -> x + 2L)
+                .reduce(0L, Long::sum);
+        return sum;
+    }
+
+    @Benchmark
+    public Long map_megamorphic_LStreams_6(){
         Long sum = LStream.of(v)
                 .map(x -> x + 2L)
                 .map(x -> x + 2L)
@@ -119,7 +140,63 @@ public class Benchmark_SimpleBoxedPipelines {
     }
 
     @Benchmark
-    public Long map_Megamorphic_Java8Streams(){
+    public Long map_megamorphic_LStreams_2_manually_inlined(){
+        UnaryOperator<Long> lambda = x -> x + 2L;
+        Long sum = LStream.of(v)
+                .map(lambda)
+                .map(lambda)
+                .reduce(0L, Long::sum);
+        return sum;
+    }
+
+    @Benchmark
+    public Long map_megamorphic_LStreams_4_manually_inlined(){
+        UnaryOperator<Long> lambda = x -> x + 2L;
+        Long sum = LStream.of(v)
+                .map(lambda)
+                .map(lambda)
+                .map(lambda)
+                .map(lambda)
+                .reduce(0L, Long::sum);
+        return sum;
+    }
+
+    @Benchmark
+    public Long map_megamorphic_LStreams_6_manually_inlined(){
+        UnaryOperator<Long> lambda = x -> x + 2L;
+        Long sum = LStream.of(v)
+                .map(lambda)
+                .map(lambda)
+                .map(lambda)
+                .map(lambda)
+                .map(lambda)
+                .map(lambda)
+                .reduce(0L, Long::sum);
+        return sum;
+    }
+
+    @Benchmark
+    public Long map_megamorphic_Java8Streams_2(){
+        Long sum = Stream.of(v)
+                .map(x -> x + 2L)
+                .map(x -> x + 2L)
+                .reduce(0L, Long::sum);
+        return sum;
+    }
+
+    @Benchmark
+    public Long map_megamorphic_Java8Streams_4(){
+        Long sum = Stream.of(v)
+                .map(x -> x + 2L)
+                .map(x -> x + 2L)
+                .map(x -> x + 2L)
+                .map(x -> x + 2L)
+                .reduce(0L, Long::sum);
+        return sum;
+    }
+
+    @Benchmark
+    public Long map_megamorphic_Java8Streams_6(){
         Long sum = Stream.of(v)
                 .map(x -> x + 2L)
                 .map(x -> x + 2L)
@@ -127,6 +204,42 @@ public class Benchmark_SimpleBoxedPipelines {
                 .map(x -> x + 2L)
                 .map(x -> x + 2L)
                 .map(x -> x + 2L)
+                .reduce(0L, Long::sum);
+        return sum;
+    }
+
+    @Benchmark
+    public Long map_megamorphic_Java8Streams_2_manually_inlined(){
+        UnaryOperator<Long> lambda = x -> x + 2L;
+        Long sum = Stream.of(v)
+                .map(lambda)
+                .map(lambda)
+                .reduce(0L, Long::sum);
+        return sum;
+    }
+
+    @Benchmark
+    public Long map_megamorphic_Java8Streams_4_manually_inlined(){
+        UnaryOperator<Long> lambda = x -> x + 2L;
+        Long sum = Stream.of(v)
+                .map(lambda)
+                .map(lambda)
+                .map(lambda)
+                .map(lambda)
+                .reduce(0L, Long::sum);
+        return sum;
+    }
+
+    @Benchmark
+    public Long map_megamorphic_Java8Streams_6_manually_inlined(){
+        UnaryOperator<Long> lambda = x -> x + 2L;
+        Long sum = Stream.of(v)
+                .map(lambda)
+                .map(lambda)
+                .map(lambda)
+                .map(lambda)
+                .map(lambda)
+                .map(lambda)
                 .reduce(0L, Long::sum);
         return sum;
     }
