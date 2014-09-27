@@ -44,5 +44,6 @@ b.Benchmark_SimplePrimitivePipelines.map_megamorphic_LStreams_6                 
 b.Benchmark_SimplePrimitivePipelines.map_megamorphic_LStreams_manually_inlined_2        avgt        5    4.009        0.562  ms/op
 b.Benchmark_SimplePrimitivePipelines.map_megamorphic_LStreams_manually_inlined_4        avgt        5    5.967        2.019  ms/op
 b.Benchmark_SimplePrimitivePipelines.map_megamorphic_LStreams_manually_inlined_6        avgt        5    9.943        0.201  ms/op
+b.Benchmark_SimplePrimitivePipelines.sort_Baseline                                      avgt        5    7.681        0.409  ms/op
 b.Benchmark_SimplePrimitivePipelines.sort_Java8Streams                                  avgt        5   29.268        2.673  ms/op
 b.Benchmark_SimplePrimitivePipelines.sort_LStreams                                      avgt        5  114.545       24.458  ms/op
