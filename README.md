@@ -40,6 +40,7 @@ LStreams and Java 8 Streams in the measurements files:
 
 * [HotSpot benchmarks](measurements-hotspot)
 * [Graal benchmarks](measurements-graal)
+* and in [spreadsheet](measurements.ods)
  
 ### References
 * [Clash of the Lambdas](http://biboudis.github.io/clashofthelambdas/)
