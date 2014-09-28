@@ -31,14 +31,14 @@ java -XX:-TieredCompilation -jar target/microbenchmarks.jar -wi 15 -i 10 -f 1 -g
 ### Measurements
 *TL;DR* 
 
-With large MaxInlineLevel, LStreams are slightly better in the 
+In C2, with large MaxInlineLevel, LStreams are slightly better in the 
 cartesian product case, they are considerably slower in the sort case 
 due to the sorting algorithm and in all other cases, numbers are similar.
 
 You can take a look at the most current measurements, that include baseline, 
-LStreams and Java 8 Streams in the measurements files: 
+LStreams and Java 8 Streams in the measurements files for both C2 and Graal: 
 
-* [HotSpot benchmarks](measurements-hotspot)
+* [C2 benchmarks](measurements-c2)
 * [Graal benchmarks](measurements-graal)
 * and in [spreadsheet](measurements.ods)
  
