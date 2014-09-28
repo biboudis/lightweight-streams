@@ -28,12 +28,16 @@ mvn clean package -Dskiptests
 # run benchmarks
 java -XX:-TieredCompilation -jar target/microbenchmarks.jar -wi 15 -i 10 -f 1 -gc -tu ms ".*"
 ```
-### Measurements
+### Measurements (in-progress)
 *TL;DR* 
 
 In C2, with large MaxInlineLevel, LStreams are slightly better in the 
 cartesian product case, they are considerably slower in the sort case 
 due to the sorting algorithm and in all other cases, numbers are similar.
+
+In Graal, all manually inlined megamorphic boxed/primitive LStreams 
+run 50-100% faster. Nearly all megamorphic primitive LStreams run 
+considerably faster!
 
 You can take a look at the most current measurements, that include baseline, 
 LStreams and Java 8 Streams in the measurements files for both C2 and Graal: 
