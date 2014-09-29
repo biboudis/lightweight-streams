@@ -16,6 +16,15 @@ public class LongLPipeline implements LongLStream {
         this.streamf = streamf;
     }
 
+    // lazy operations.
+    @Override
+    public LongLStream filter(LongPredicate predicate) {
+        Consumer<LongPredicate> consumer = (iterf) ->
+                streamf.accept(value -> !predicate.test(value) || iterf.test(value));
+
+        return new LongLPipeline(consumer);
+    }
+
     @Override
     public LongLStream map(LongUnaryOperator f) {
         Consumer<LongPredicate> consumer = (iterf) ->
@@ -26,30 +35,10 @@ public class LongLPipeline implements LongLStream {
 
     @Override
     public <R> LStream<R> mapToObj(LongFunction<R> f) {
-        Consumer<Function<R, Boolean>> consumer = (iterf) ->
-                streamf.accept(value -> iterf.apply(f.apply(value)));
+        Consumer<Predicate<R>> consumer = (iterf) ->
+                streamf.accept(value -> iterf.test(f.apply(value)));
 
-        return new LPipeline(consumer);
-    }
-
-    @Override
-    public LongLStream filter(LongPredicate predicate) {
-        Consumer<LongPredicate> consumer = (iterf) ->
-                streamf.accept(value -> predicate.test(value) ? iterf.test(value) : true);
-
-        return new LongLPipeline(consumer);
-    }
-
-    @Override
-    public long reduce(long identity, LongBinaryOperator accumulator) {
-        LongCell state = new LongCell(identity);
-
-        streamf.accept(value -> {
-            state.value = accumulator.applyAsLong(state.value, value);
-            return true;
-        });
-
-        return state.value;
+        return new LPipeline<R>(consumer);
     }
 
     @Override
@@ -62,6 +51,19 @@ public class LongLPipeline implements LongLStream {
                 });
 
         return new LongLPipeline(consumer);
+    }
+
+    // eager operations.
+    @Override
+    public long reduce(long identity, LongBinaryOperator accumulator) {
+        LongCell state = new LongCell(identity);
+
+        streamf.accept(value -> {
+            state.value = accumulator.applyAsLong(state.value, value);
+            return true;
+        });
+
+        return state.value;
     }
 
     @Override
@@ -89,9 +91,7 @@ public class LongLPipeline implements LongLStream {
             return true;
         });
 
-        long[] values = Longs.toArray(buffer);
-
-        return values;
+        return Longs.toArray(buffer);
     }
 
     @Override

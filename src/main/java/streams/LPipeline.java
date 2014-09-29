@@ -19,6 +19,7 @@ public class LPipeline<T> implements LStream<T>  {
         this.streamf = streamf;
     }
 
+    // lazy operations.
     @Override
     public <R> LStream<R> map(Function<T, R> f) {
         Consumer<Predicate<R>> consumer = (iterf) ->
@@ -30,11 +31,24 @@ public class LPipeline<T> implements LStream<T>  {
     @Override
     public LStream<T> filter(Predicate<T> predicate) {
         Consumer<Predicate<T>> consumer = (iterf) ->
-                streamf.accept(value -> predicate.test(value) ? iterf.test(value) : true);
+                streamf.accept(value -> !predicate.test(value) || iterf.test(value));
 
         return new LPipeline<T>(consumer);
     }
 
+    @Override
+    public <R> LStream<R> flatMap(Function<T, LStream<R>> f) {
+        Consumer<Predicate<R>> consumer = (iterf) ->
+                streamf.accept(value -> {
+                    LStream<R> streamfInternal = f.apply(value);
+                    streamfInternal.getStreamF().accept(iterf);
+                    return true;
+                });
+
+        return new LPipeline<R>(consumer);
+    }
+
+    // eager operations.
     @Override
     public T reduce(T identity, BinaryOperator<T> accumulator) {
         final RefCell<T> state = new RefCell<T>(identity);
@@ -56,18 +70,6 @@ public class LPipeline<T> implements LStream<T>  {
         });
 
         return state.value;
-    }
-
-    @Override
-    public <R> LStream<R> flatMap(Function<T, LStream<R>> f) {
-        Consumer<Predicate<R>> consumer = (iterf) ->
-                streamf.accept(value -> {
-                    LStream<R> streamfInternal = f.apply(value);
-                    streamfInternal.getStreamF().accept(iterf);
-                    return true;
-                });
-
-        return new LPipeline<R>(consumer);
     }
 
     @Override
