@@ -47,3 +47,9 @@ b.Benchmark_SimplePrimitivePipelines.map_megamorphic_LStreams_single_lambda_6   
 b.Benchmark_SimplePrimitivePipelines.sort_Baseline                                      avgt       10   9.428        0.950  ms/op
 b.Benchmark_SimplePrimitivePipelines.sort_Java8Streams                                  avgt       10  33.311        0.306  ms/op
 b.Benchmark_SimplePrimitivePipelines.sort_LStreams                                      avgt       10  82.332        4.506  ms/op
+
+java -Xmx2g -XX:-TieredCompilation -Dbenchmark.F=300000000 -jar target/microbenchmarks.jar -wi 5 -i 5 -f 1 -gc -tu ms ".*filter_megamo.*"
+b.Benchmark_SimplePrimitivePipelines.filter_megamorphic_Baseline_6        avgt        5   584.480       10.735  ms/op
+b.Benchmark_SimplePrimitivePipelines.filter_megamorphic_Java8Streams_2    avgt        5  3231.546       65.120  ms/op
+b.Benchmark_SimplePrimitivePipelines.filter_megamorphic_Java8Streams_4    avgt        5  6678.306      263.253  ms/op
+b.Benchmark_SimplePrimitivePipelines.filter_megamorphic_Java8Streams_6    avgt        5  9120.706      385.894  ms/op

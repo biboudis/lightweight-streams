@@ -33,6 +33,11 @@ public class Test_SimplePrimitivePipelines {
     }
 
     @Test
+    public void Test_filter_Megamorphic_PrimitiveLong(){
+        assertEquals (__benchClass.filter_megamorphic_Java8Streams_6(), __benchClass.filter_megamorphic_Baseline_6()) ;
+    }
+
+    @Test
     public void Test_sort_Boxed_Long(){
         long[] sort_primitiveLong_baseline = __benchClass.sort_Baseline();
         long[] sort_primitiveLong_lStreams = __benchClass.sort_LStreams();

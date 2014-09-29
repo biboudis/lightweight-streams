@@ -12,7 +12,7 @@ import java.util.stream.LongStream;
 
 mvn -DskipTests clean package
 
-java -Xmx1g -XX:-TieredCompilation -XX:MaxInlineLevel=12 -Dbenchmark.N=1000000 -jar target/microbenchmarks.jar -wi 15 -i 10 -f 1 -gc -tu ms ".*"
+java -Xmx1g -XX:-TieredCompilation -XX:MaxInlineLevel=12 -Dbenchmark.N=1000000 -Dbenchmark.F=300000000 -jar target/microbenchmarks.jar -wi 15 -i 10 -f 1 -gc -tu ms ".*"
 
  */
 
@@ -21,8 +21,10 @@ java -Xmx1g -XX:-TieredCompilation -XX:MaxInlineLevel=12 -Dbenchmark.N=1000000 -
 public class Benchmark_SimplePrimitivePipelines {
 
     private static int N =  Integer.getInteger("benchmark.N", 1000);
+    private static int F =  Integer.getInteger("benchmark.F", 1000);
 
     public long[] v, v1,v2, v_forSorting_Baseline ,v_forSorting_LStreams, v_forSorting_Java8Streams;
+    public int[] v_for_megamorphic_filter;
 
     @Setup
     public void setUp() {
@@ -33,6 +35,7 @@ public class Benchmark_SimplePrimitivePipelines {
         v_forSorting_Baseline  = IntStream.range(0, N).mapToLong(i -> i % 1000).toArray();
         v_forSorting_LStreams  = IntStream.range(0, N).mapToLong(i -> i % 1000).toArray();
         v_forSorting_Java8Streams  = IntStream.range(0, N).mapToLong(i -> i % 1000).toArray();
+        v_for_megamorphic_filter = IntStream.range(0, F).toArray();
     }
 
     @Benchmark
@@ -48,9 +51,24 @@ public class Benchmark_SimplePrimitivePipelines {
     @Benchmark
     public long map_filter_fold_Baseline() {
         long acc = 0L;
-        for (int i =0 ; i < v.length ; i++) {
+        for (int i = 0 ; i < v.length ; i++) {
             if (v[i] % 2L == 0L)
                 acc += v[i] + 2L;
+        }
+        return acc;
+    }
+
+    @Benchmark
+    public long filter_megamorphic_Baseline_6() {
+        long acc = 0L;
+        for (int i = 0 ; i < v_for_megamorphic_filter.length ; i++) {
+            if (v_for_megamorphic_filter[i] > 10
+                    && v_for_megamorphic_filter[i] > 11
+                    && v_for_megamorphic_filter[i] > 12
+                    && v_for_megamorphic_filter[i] > 13
+                    && v_for_megamorphic_filter[i] > 14
+                    && v_for_megamorphic_filter[i] > 15 )
+                acc ++;
         }
         return acc;
     }
@@ -255,6 +273,39 @@ public class Benchmark_SimplePrimitivePipelines {
         long[] res = LongStream.of(v_forSorting_Java8Streams)
                 .sorted()
                 .toArray();
+        return res;
+    }
+
+    @Benchmark
+    public long filter_megamorphic_Java8Streams_2(){
+        long res = IntStream.of(v_for_megamorphic_filter)
+                .filter(x->x>10)
+                .filter(x->x>11)
+                .count();
+        return res;
+    }
+
+    @Benchmark
+    public long filter_megamorphic_Java8Streams_4(){
+        long res = IntStream.of(v_for_megamorphic_filter)
+                .filter(x->x>10)
+                .filter(x->x>11)
+                .filter(x->x>12)
+                .filter(x->x>13)
+                .count();
+        return res;
+    }
+
+    @Benchmark
+    public long filter_megamorphic_Java8Streams_6(){
+        long res = IntStream.of(v_for_megamorphic_filter)
+                .filter(x->x>10)
+                .filter(x->x>11)
+                .filter(x->x>12)
+                .filter(x->x>13)
+                .filter(x->x>14)
+                .filter(x->x>15)
+                .count();
         return res;
     }
 }
