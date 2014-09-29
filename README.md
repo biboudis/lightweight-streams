@@ -35,7 +35,7 @@ In C2, with large MaxInlineLevel, LStreams are slightly better in the
 cartesian product case, they are considerably slower in the sort case 
 due to the sorting algorithm and in all other cases, numbers are similar.
 
-In Graal, all manually inlined megamorphic boxed/primitive LStreams 
+In Graal, all megamorphic boxed/primitive LStreams with one lambda 
 run 50-100% faster. Nearly all megamorphic primitive LStreams run 
 considerably faster!
 
