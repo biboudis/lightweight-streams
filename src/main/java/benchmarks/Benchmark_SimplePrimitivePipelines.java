@@ -83,9 +83,17 @@ public class Benchmark_SimplePrimitivePipelines {
     }
 
     @Benchmark
+    public long[] sort_copyOf() {
+        return Arrays.copyOf(v_forSorting_Baseline, N);
+    }
+
+    @Benchmark
     public long[] sort_Baseline(){
-        Arrays.sort(v_forSorting_Baseline);
-        return v_forSorting_Baseline;
+        long[] copyOf = Arrays.copyOf(v_forSorting_Baseline, N);
+
+        Arrays.sort(copyOf);
+
+        return copyOf;
     }
 
     @Benchmark

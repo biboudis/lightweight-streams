@@ -66,9 +66,17 @@ public class Benchmark_SimpleBoxedPipelines {
     }
 
     @Benchmark
+    public Long[] sort_copyOf() {
+        return Arrays.copyOf(v_forSorting_Baseline, N);
+    }
+
+    @Benchmark
     public Long[] sort_Baseline(){
-        Arrays.sort(v_forSorting_Baseline);
-        return v_forSorting_Baseline;
+        Long[] copyOf = Arrays.copyOf(v_forSorting_Baseline, N);
+
+        Arrays.sort(copyOf);
+
+        return copyOf;
     }
 
     @Benchmark
