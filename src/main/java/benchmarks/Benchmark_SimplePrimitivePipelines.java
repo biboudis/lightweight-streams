@@ -1,6 +1,7 @@
 package benchmarks;
 
 import org.openjdk.jmh.annotations.*;
+import streams.IntLStream;
 import streams.LongLStream;
 
 import java.util.Arrays;
@@ -24,12 +25,14 @@ public class Benchmark_SimplePrimitivePipelines {
     private static int F =  Integer.getInteger("benchmark.F", 1000);
 
     public long[] v, v1,v2, v_forSorting_Baseline ,v_forSorting_LStreams, v_forSorting_Java8Streams;
+    public int[] v_Int;
     public int[] v_for_megamorphic_filter;
 
     @Setup
     public void setUp() {
         // Ok, lets use IntStream for this :P
         v  = IntStream.range(0, N).mapToLong(i -> i % 1000).toArray();
+        v_Int  = IntStream.range(0, N).map(i -> i % 1000).toArray();
         v1 = IntStream.range(0, 100000).mapToLong(i -> i % 10).toArray();
         v2 = IntStream.range(0, 10).mapToLong(i -> i % 10).toArray();
         v_forSorting_Baseline  = IntStream.range(0, N).mapToLong(i -> i % 1000).toArray();
@@ -314,6 +317,30 @@ public class Benchmark_SimplePrimitivePipelines {
                 .filter(x->x>14)
                 .filter(x->x>15)
                 .count();
+        return res;
+    }
+
+    @Benchmark
+    public long count_PrimitiveLong_LStreams(){
+        long res = LongLStream.of(v).count();
+        return res;
+    }
+
+    @Benchmark
+    public long count_PrimitiveInt_LStreams(){
+        long res = IntLStream.of(v_Int).count();
+        return res;
+    }
+
+    @Benchmark
+    public long count_PrimitiveLong_Java8Streams(){
+        long res = LongStream.of(v).count();
+        return res;
+    }
+
+    @Benchmark
+    public long count_PrimitiveInt_Java8Streams(){
+        long res = IntStream.of(v_Int).count();
         return res;
     }
 }

@@ -92,6 +92,11 @@ public class LPipeline<T> implements LStream<T>  {
     }
 
     @Override
+    public int length() {
+        return 0;
+    }
+
+    @Override
     public T[] toArray(IntFunction<T[]> generator) {
         ArrayList<T> buffer = new ArrayList<T>();
 
@@ -105,8 +110,4 @@ public class LPipeline<T> implements LStream<T>  {
         return buffer.toArray(arrayV);
     }
 
-    @Override
-    public int length() {
-        return -1;
-    }
 }

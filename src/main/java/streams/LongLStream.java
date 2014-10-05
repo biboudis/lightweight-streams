@@ -30,11 +30,13 @@ public interface LongLStream {
 
     long reduce (long state, LongBinaryOperator folder);
 
+    <U> U reduce(U identity, ObjLongConsumer<U> accumulator);
+
     LongLStream flatMap (LongFunction<? extends LongLStream> f);
 
     LongLStream sorted ();
 
-    int length ();
+    long count();
 
     long[] toArray();
 

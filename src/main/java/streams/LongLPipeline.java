@@ -67,6 +67,18 @@ public class LongLPipeline implements LongLStream {
     }
 
     @Override
+    public <U> U reduce(U identity, ObjLongConsumer<U> accumulator) {
+        final RefCell<U> state = new RefCell<U>(identity);
+
+        streamf.accept(value -> {
+            accumulator.accept(state.value, value);
+            return true;
+        });
+
+        return state.value;
+    }
+
+    @Override
     public LongLStream sorted() {
         ArrayList<Long> buffer = new ArrayList<>();
 
@@ -95,8 +107,10 @@ public class LongLPipeline implements LongLStream {
     }
 
     @Override
-    public int length() {
-        return -1;
+    public long count() {
+        LongCell length = new LongCell(0);
+
+        return this.map((value) -> 1).reduce(length.value, Long::sum);
     }
 
     @Override

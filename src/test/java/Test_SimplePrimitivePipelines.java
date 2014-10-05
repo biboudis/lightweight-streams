@@ -38,6 +38,16 @@ public class Test_SimplePrimitivePipelines {
     }
 
     @Test
+    public void Test_length_PrimitiveLong(){
+        assertEquals(__benchClass.count_PrimitiveLong_Java8Streams(), __benchClass.count_PrimitiveLong_LStreams());
+    }
+
+    @Test
+    public void Test_length_PrimitiveInt(){
+        assertEquals(__benchClass.count_PrimitiveInt_Java8Streams(), __benchClass.count_PrimitiveInt_LStreams());
+    }
+
+    @Test
     public void Test_sort_Boxed_Long(){
         long[] sort_primitiveLong_baseline = __benchClass.sort_Baseline();
         long[] sort_primitiveLong_lStreams = __benchClass.sort_LStreams();
