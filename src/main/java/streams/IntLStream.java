@@ -24,7 +24,7 @@ public interface IntLStream {
 
     IntLStream map(IntUnaryOperator f);
 
-    LongLStream mapToLong(LongUnaryOperator f);
+    LongLStream mapToLong(IntToLongFunction f);
 
     <R> LStream<R> mapToObj(IntFunction<R> f);
 

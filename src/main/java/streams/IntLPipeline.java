@@ -34,7 +34,7 @@ public class IntLPipeline implements IntLStream {
     }
 
     @Override
-    public LongLStream mapToLong(LongUnaryOperator f) {
+    public LongLStream mapToLong(IntToLongFunction f) {
         Consumer<LongPredicate> consumer = (iterf) ->
                 streamf.accept(value -> iterf.test(f.applyAsLong(value)));
 
@@ -106,7 +106,7 @@ public class IntLPipeline implements IntLStream {
     public long count() {
         LongCell length = new LongCell(0);
 
-        return this.mapToLong((value) -> 1L).reduce(length.value, Long::sum);
+        return this.mapToLong(value -> 1L).reduce(length.value, Long::sum);
     }
 
     @Override

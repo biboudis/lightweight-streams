@@ -29,6 +29,15 @@ public class LPipeline<T> implements LStream<T>  {
     }
 
     @Override
+    public LongLStream mapToLong(ToLongFunction<T> f) {
+
+        Consumer<LongPredicate> consumer = (iterf) ->
+                streamf.accept(value -> iterf.test(f.applyAsLong(value)));
+
+        return new LongLPipeline(consumer);
+    }
+
+    @Override
     public LStream<T> filter(Predicate<T> predicate) {
         Consumer<Predicate<T>> consumer = (iterf) ->
                 streamf.accept(value -> !predicate.test(value) || iterf.test(value));
@@ -92,8 +101,10 @@ public class LPipeline<T> implements LStream<T>  {
     }
 
     @Override
-    public int length() {
-        return 0;
+    public long count() {
+        LongCell length = new LongCell(0);
+
+        return this.mapToLong((value) -> 1L).reduce(length.value, Long::sum);
     }
 
     @Override

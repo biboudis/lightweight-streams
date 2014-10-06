@@ -9,44 +9,40 @@ import java.util.function.LongUnaryOperator;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
-/**
-
-mvn -DskipTests clean package
-
-java -Xmx1g -XX:-TieredCompilation -XX:MaxInlineLevel=12 -Dbenchmark.N=1000000 -Dbenchmark.F=300000000 -jar target/microbenchmarks.jar -wi 15 -i 10 -f 1 -gc -tu ms ".*"
-
- */
-
 @State(Scope.Thread)
 @BenchmarkMode(Mode.AverageTime)
 public class Benchmark_SimplePrimitivePipelines {
 
+    // For map, count, operations
     private static int N =  Integer.getInteger("benchmark.N", 1000);
+    // For filtering operations
     private static int F =  Integer.getInteger("benchmark.F", 1000);
+    // For cartesian product operations
+    private static int N_outer =  Integer.getInteger("benchmark.N_outer", 100);
+    private static int N_inner =  Integer.getInteger("benchmark.N_inner", 10);
 
-    public long[] v, v1,v2, v_forSorting_Baseline ,v_forSorting_LStreams, v_forSorting_Java8Streams;
-    public int[] v_Int;
-    public int[] v_for_megamorphic_filter;
+    public long[] v_longs, v_outer, v_inner, v_forSorting_Baseline ,v_forSorting_LStreams, v_forSorting_Java8Streams;
+    public int[] v_ints, v_for_megamorphic_filter;
 
     @Setup
     public void setUp() {
         // Ok, lets use IntStream for this :P
-        v  = IntStream.range(0, N).mapToLong(i -> i % 1000).toArray();
-        v_Int  = IntStream.range(0, N).map(i -> i % 1000).toArray();
-        v1 = IntStream.range(0, 100000).mapToLong(i -> i % 10).toArray();
-        v2 = IntStream.range(0, 10).mapToLong(i -> i % 10).toArray();
-        v_forSorting_Baseline  = IntStream.range(0, N).mapToLong(i -> i % 1000).toArray();
-        v_forSorting_LStreams  = IntStream.range(0, N).mapToLong(i -> i % 1000).toArray();
-        v_forSorting_Java8Streams  = IntStream.range(0, N).mapToLong(i -> i % 1000).toArray();
-        v_for_megamorphic_filter = IntStream.range(0, F).toArray();
+        v_longs     = IntStream.range(0, N).mapToLong(i -> i % 1000).toArray();
+        v_ints      = IntStream.range(0, N).map(i -> i % 1000).toArray();
+        v_outer     = IntStream.range(0, N_outer).mapToLong(i -> i % 10).toArray();
+        v_inner     = IntStream.range(0, N_inner).mapToLong(i -> i % 10).toArray();
+        v_forSorting_Baseline       = IntStream.range(0, N).mapToLong(i -> i % 1000).toArray();
+        v_forSorting_LStreams       = IntStream.range(0, N).mapToLong(i -> i % 1000).toArray();
+        v_forSorting_Java8Streams   = IntStream.range(0, N).mapToLong(i -> i % 1000).toArray();
+        v_for_megamorphic_filter    = IntStream.range(0, F).map(i -> i % 1000).toArray();
     }
 
     @Benchmark
     public long cart_Baseline() {
         long cart = 0L;
-        for (int d = 0 ; d < v1.length ; d++) {
-            for (int dp = 0 ; dp < v2.length ; dp++){
-                cart += v1[d] * v2[dp];
+        for (int d = 0 ; d < v_outer.length ; d++) {
+            for (int dp = 0 ; dp < v_inner.length ; dp++){
+                cart += v_outer[d] * v_inner[dp];
             }
         }
         return cart;
@@ -54,9 +50,9 @@ public class Benchmark_SimplePrimitivePipelines {
     @Benchmark
     public long map_filter_fold_Baseline() {
         long acc = 0L;
-        for (int i = 0 ; i < v.length ; i++) {
-            if (v[i] % 2L == 0L)
-                acc += v[i] + 2L;
+        for (int i = 0 ; i < v_longs.length ; i++) {
+            if (v_longs[i] % 2L == 0L)
+                acc += v_longs[i] + 2L;
         }
         return acc;
     }
@@ -79,8 +75,8 @@ public class Benchmark_SimplePrimitivePipelines {
     @Benchmark
     public long map_megamorphic_Baseline_6() {
         long acc = 0L;
-        for (int i = 0 ; i < v.length ; i++) {
-            acc += (v[i] + 2L + 2L + 2L + 2L + 2L + 2L);
+        for (int i = 0 ; i < v_longs.length ; i++) {
+            acc += (v_longs[i] + 2L + 2L + 2L + 2L + 2L + 2L);
         }
         return acc;
     }
@@ -101,7 +97,7 @@ public class Benchmark_SimplePrimitivePipelines {
 
     @Benchmark
     public long map_filter_fold_Java8Streams() {
-        long sum = LongStream.of(v)
+        long sum = LongStream.of(v_longs)
                 .filter(x -> x % 2L == 0L)
                 .map(x -> x + 2L)
                 .reduce(0L, Long::sum);
@@ -110,7 +106,7 @@ public class Benchmark_SimplePrimitivePipelines {
 
     @Benchmark
     public long map_filter_fold_LStreams() {
-        long sum = LongLStream.of(v)
+        long sum = LongLStream.of(v_longs)
                 .filter(x -> x % 2L == 0L)
                 .map(x -> x + 2L)
                 .reduce(0L, Long::sum);
@@ -119,23 +115,23 @@ public class Benchmark_SimplePrimitivePipelines {
 
     @Benchmark
     public long cart_Java8Streams() {
-        long cart = LongStream.of(v1)
-                .flatMap(d -> LongStream.of(v2).map(dP -> dP * d))
+        long cart = LongStream.of(v_outer)
+                .flatMap(d -> LongStream.of(v_inner).map(dP -> dP * d))
                 .reduce(0L, Long::sum);
         return cart;
     }
 
     @Benchmark
     public long cart_LStreams() {
-        long cart = LongLStream.of(v1)
-                .flatMap(d -> LongLStream.of(v2).map(dP -> dP * d))
+        long cart = LongLStream.of(v_outer)
+                .flatMap(d -> LongLStream.of(v_inner).map(dP -> dP * d))
                 .reduce(0L, Long::sum);
         return cart;
     }
 
     @Benchmark
     public long map_megamorphic_LStreams_2(){
-        long sum = LongLStream.of(v)
+        long sum = LongLStream.of(v_longs)
                 .map(x -> x + 2L)
                 .map(x -> x + 2L)
                 .reduce(0L, Long::sum);
@@ -144,7 +140,7 @@ public class Benchmark_SimplePrimitivePipelines {
 
     @Benchmark
     public long map_megamorphic_LStreams_4(){
-        long sum = LongLStream.of(v)
+        long sum = LongLStream.of(v_longs)
                 .map(x -> x + 2L)
                 .map(x -> x + 2L)
                 .map(x -> x + 2L)
@@ -155,7 +151,7 @@ public class Benchmark_SimplePrimitivePipelines {
 
     @Benchmark
     public long map_megamorphic_LStreams_6(){
-        long sum = LongLStream.of(v)
+        long sum = LongLStream.of(v_longs)
                 .map(x -> x + 2L)
                 .map(x -> x + 2L)
                 .map(x -> x + 2L)
@@ -169,7 +165,7 @@ public class Benchmark_SimplePrimitivePipelines {
     @Benchmark
     public long map_megamorphic_LStreams_single_lambda_2(){
         LongUnaryOperator lambda = x -> x + 2L;
-        long sum = LongLStream.of(v)
+        long sum = LongLStream.of(v_longs)
                 .map(lambda)
                 .map(lambda)
                 .reduce(0L, Long::sum);
@@ -179,7 +175,7 @@ public class Benchmark_SimplePrimitivePipelines {
     @Benchmark
     public long map_megamorphic_LStreams_single_lambda_4(){
         LongUnaryOperator lambda = x -> x + 2L;
-        long sum = LongLStream.of(v)
+        long sum = LongLStream.of(v_longs)
                 .map(lambda)
                 .map(lambda)
                 .map(lambda)
@@ -191,7 +187,7 @@ public class Benchmark_SimplePrimitivePipelines {
     @Benchmark
     public long map_megamorphic_LStreams_single_lambda_6(){
         LongUnaryOperator lambda = x -> x + 2L;
-        long sum = LongLStream.of(v)
+        long sum = LongLStream.of(v_longs)
                 .map(lambda)
                 .map(lambda)
                 .map(lambda)
@@ -204,7 +200,7 @@ public class Benchmark_SimplePrimitivePipelines {
 
     @Benchmark
     public long map_megamorphic_Java8Streams_2(){
-        long sum = LongStream.of(v)
+        long sum = LongStream.of(v_longs)
                 .map(x -> x + 2L)
                 .map(x -> x + 2L)
                 .reduce(0L, Long::sum);
@@ -213,7 +209,7 @@ public class Benchmark_SimplePrimitivePipelines {
 
     @Benchmark
     public long map_megamorphic_Java8Streams_4(){
-        long sum = LongStream.of(v)
+        long sum = LongStream.of(v_longs)
                 .map(x -> x + 2L)
                 .map(x -> x + 2L)
                 .map(x -> x + 2L)
@@ -224,7 +220,7 @@ public class Benchmark_SimplePrimitivePipelines {
 
     @Benchmark
     public long map_megamorphic_Java8Streams_6(){
-        long sum = LongStream.of(v)
+        long sum = LongStream.of(v_longs)
                 .map(x -> x + 2L)
                 .map(x -> x + 2L)
                 .map(x -> x + 2L)
@@ -238,7 +234,7 @@ public class Benchmark_SimplePrimitivePipelines {
     @Benchmark
     public long map_megamorphic_Java8Streams_single_lambda_2(){
         LongUnaryOperator lambda = x -> x + 2L;
-        long sum = LongStream.of(v)
+        long sum = LongStream.of(v_longs)
                 .map(lambda)
                 .map(lambda)
                 .reduce(0L, Long::sum);
@@ -248,7 +244,7 @@ public class Benchmark_SimplePrimitivePipelines {
     @Benchmark
     public long map_megamorphic_Java8Streams_single_lambda_4(){
         LongUnaryOperator lambda = x -> x + 2L;
-        long sum = LongStream.of(v)
+        long sum = LongStream.of(v_longs)
                 .map(lambda)
                 .map(lambda)
                 .map(lambda)
@@ -260,7 +256,7 @@ public class Benchmark_SimplePrimitivePipelines {
     @Benchmark
     public long map_megamorphic_Java8Streams_single_lambda_6(){
         LongUnaryOperator lambda = x -> x + 2L;
-        long sum = LongStream.of(v)
+        long sum = LongStream.of(v_longs)
                 .map(lambda)
                 .map(lambda)
                 .map(lambda)
@@ -322,25 +318,25 @@ public class Benchmark_SimplePrimitivePipelines {
 
     @Benchmark
     public long count_PrimitiveLong_LStreams(){
-        long res = LongLStream.of(v).count();
+        long res = LongLStream.of(v_longs).count();
         return res;
     }
 
     @Benchmark
     public long count_PrimitiveInt_LStreams(){
-        long res = IntLStream.of(v_Int).count();
+        long res = IntLStream.of(v_ints).count();
         return res;
     }
 
     @Benchmark
     public long count_PrimitiveLong_Java8Streams(){
-        long res = LongStream.of(v).count();
+        long res = LongStream.of(v_longs).count();
         return res;
     }
 
     @Benchmark
     public long count_PrimitiveInt_Java8Streams(){
-        long res = IntStream.of(v_Int).count();
+        long res = IntStream.of(v_ints).count();
         return res;
     }
 }

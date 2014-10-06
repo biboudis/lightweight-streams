@@ -9,39 +9,40 @@ import java.util.function.UnaryOperator;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-/**
-
-mvn -DskipTests clean package
-
-java -Xmx1g -XX:-TieredCompilation -XX:MaxInlineLevel=12 -Dbenchmark.N=1000000 -jar target/microbenchmarks.jar -wi 15 -i 10 -f 1 -gc -tu ms ".*"
-
- */
-
 @State(Scope.Thread)
 @BenchmarkMode(Mode.AverageTime)
 public class Benchmark_SimpleBoxedPipelines {
 
-    private static  int N =  Integer.getInteger("benchmark.N", 1000);
+    // For map, count, operations
+    private static int N =  Integer.getInteger("benchmark.N", 1000);
+    // For filtering operations
+    private static int F =  Integer.getInteger("benchmark.F", 1000);
+    // For cartesian product operations
+    private static int N_outer =  Integer.getInteger("benchmark.N_outer", 100);
+    private static int N_inner =  Integer.getInteger("benchmark.N_inner", 10);
 
-    public Long[] v, v1,v2, v_forSorting_Baseline ,v_forSorting_LStreams, v_forSorting_Java8Streams;
-
+    public Long[] v, v_outer, v_inner, v_forSorting_Baseline ,v_forSorting_LStreams, v_forSorting_Java8Streams;
+    public Long[] v_for_megamorphic_filter;
+    
     @Setup
     public void setUp() {
         // Ok, lets use IntStream for this :P
-        v  = IntStream.range(0, N).mapToObj(i -> new Long(i % 1000)).toArray(Long[]::new);
-        v1 = IntStream.range(0, 100000).mapToObj(i -> new Long(i % 10)).toArray(Long[]::new);
-        v2 = IntStream.range(0, 10).mapToObj(i -> new Long(i % 10)).toArray(Long[]::new);
-        v_forSorting_Baseline  = IntStream.range(0, N).mapToObj(i -> new Long(i % 1000)).toArray(Long[]::new);
-        v_forSorting_LStreams  = IntStream.range(0, N).mapToObj(i -> new Long(i % 1000)).toArray(Long[]::new);
-        v_forSorting_Java8Streams  = IntStream.range(0, N).mapToObj(i -> new Long(i % 1000)).toArray(Long[]::new);
+        v           = IntStream.range(0, N).mapToObj(i -> new Long(i % 1000)).toArray(Long[]::new);
+
+        v_outer     = IntStream.range(0, N_outer).mapToObj(i -> new Long(i % 10)).toArray(Long[]::new);
+        v_inner     = IntStream.range(0, N_inner).mapToObj(i -> new Long(i % 10)).toArray(Long[]::new);
+        v_forSorting_Baseline       = IntStream.range(0, N).mapToObj(i -> new Long(i % 1000)).toArray(Long[]::new);
+        v_forSorting_LStreams       = IntStream.range(0, N).mapToObj(i -> new Long(i % 1000)).toArray(Long[]::new);
+        v_forSorting_Java8Streams   = IntStream.range(0, N).mapToObj(i -> new Long(i % 1000)).toArray(Long[]::new);
+        v_for_megamorphic_filter    = IntStream.range(0, F).mapToObj(i -> new Long(i % 1000)).toArray(Long[]::new);
     }
 
     @Benchmark
     public Long cart_Baseline() {
         Long cart = 0L;
-        for (int d = 0 ; d < v1.length ; d++) {
-            for (int dp = 0 ; dp < v2.length ; dp++){
-                cart += v1[d] * v2[dp];
+        for (int d = 0 ; d < v_outer.length ; d++) {
+            for (int dp = 0 ; dp < v_inner.length ; dp++){
+                cart += v_outer[d] * v_inner[dp];
             }
         }
         return cart;
@@ -100,16 +101,16 @@ public class Benchmark_SimpleBoxedPipelines {
 
     @Benchmark
     public Long cart_Java8Streams() {
-        long cart = Stream.of(v1)
-                .flatMap(d -> Stream.of(v2).map(dP -> dP * d))
+        long cart = Stream.of(v_outer)
+                .flatMap(d -> Stream.of(v_inner).map(dP -> dP * d))
                 .reduce(0L, Long::sum);
         return cart;
     }
 
     @Benchmark
     public Long cart_LStreams() {
-        long cart = LStream.of(v1)
-                .flatMap(d -> LStream.of(v2).<Long>map(dP -> dP * d))
+        long cart = LStream.of(v_outer)
+                .flatMap(d -> LStream.of(v_inner).<Long>map(dP -> dP * d))
                 .reduce(0L, Long::sum);
         return cart;
     }
@@ -265,6 +266,18 @@ public class Benchmark_SimpleBoxedPipelines {
         Long[] res = Stream.of(v_forSorting_Java8Streams)
                 .sorted(Comparator.<Long>naturalOrder())
                 .toArray(Long[]::new);
+        return res;
+    }
+
+    @Benchmark
+    public long count_LStreams(){
+        long res = LStream.of(v).count();
+        return res;
+    }
+
+    @Benchmark
+    public long count_Java8Streams(){
+        long res = Stream.of(v).count();
         return res;
     }
 }

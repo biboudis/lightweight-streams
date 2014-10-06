@@ -33,6 +33,11 @@ public class Test_SimpleBoxedPipelines {
     }
 
     @Test
+    public void Test_count_PrimitiveInt(){
+        assertEquals(__benchClass.count_Java8Streams(), __benchClass.count_LStreams());
+    }
+
+    @Test
     public void Test_sort_Boxed_Long(){
         Long[] sort_Boxed_baseline = __benchClass.sort_Baseline();
         Long[] sort_Boxed_lStreams = __benchClass.sort_LStreams();

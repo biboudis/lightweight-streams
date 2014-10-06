@@ -110,7 +110,7 @@ public class LongLPipeline implements LongLStream {
     public long count() {
         LongCell length = new LongCell(0);
 
-        return this.map((value) -> 1).reduce(length.value, Long::sum);
+        return this.map(value -> 1).reduce(length.value, Long::sum);
     }
 
     @Override

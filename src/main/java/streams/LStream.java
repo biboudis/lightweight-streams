@@ -24,6 +24,8 @@ public interface LStream<T> {
 
     <R> LStream<R> map (Function<T,R> f);
 
+    LongLStream mapToLong(ToLongFunction<T> f);
+
     LStream<T> filter (Predicate<T> predicate);
 
     T reduce (T state, BinaryOperator<T> accumulator);
@@ -34,9 +36,9 @@ public interface LStream<T> {
 
     LStream<T> sorted (Comparator<? super T> comparator );
 
-    int length ();
-
     T[] toArray(IntFunction<T[]> generator);
 
     Consumer<Predicate<T>> getStreamF();
+
+    long count();
 }

@@ -38,12 +38,12 @@ public class Test_SimplePrimitivePipelines {
     }
 
     @Test
-    public void Test_length_PrimitiveLong(){
+    public void Test_count_PrimitiveLong(){
         assertEquals(__benchClass.count_PrimitiveLong_Java8Streams(), __benchClass.count_PrimitiveLong_LStreams());
     }
 
     @Test
-    public void Test_length_PrimitiveInt(){
+    public void Test_count_PrimitiveInt(){
         assertEquals(__benchClass.count_PrimitiveInt_Java8Streams(), __benchClass.count_PrimitiveInt_LStreams());
     }
 
