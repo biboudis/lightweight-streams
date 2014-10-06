@@ -33,6 +33,7 @@ java -Xmx2g -XX:-TieredCompilation -XX:MaxInlineLevel=12 \
      -Dbenchmark.N_inner=10 \
      -jar target/microbenchmarks.jar \
      -wi 5 -i 5 -f 1 -gc -tu ms ".*"
+```
 ### Measurements (in-progress)
 *TL;DR* 
 
