@@ -31,7 +31,7 @@ public class Benchmark_SimpleBoxedPipelines {
         return array;
     }
 
-    @Setup(Level.Invocation)
+    @Setup
     public void setUp() {
         v  = fillArray(N);
         v_outer = fillArray(N_outer);

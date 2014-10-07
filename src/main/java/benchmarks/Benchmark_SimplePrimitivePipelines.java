@@ -40,7 +40,7 @@ public class Benchmark_SimplePrimitivePipelines {
         return array;
     }
 
-    @Setup(Level.Invocation)
+    @Setup
     public void setUp() {
         v_longs = fillLongArray(N);
         v_ints  = fillIntArray(N);
