@@ -6,7 +6,6 @@ import streams.LStream;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.function.UnaryOperator;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 @State(Scope.Thread)
@@ -23,18 +22,24 @@ public class Benchmark_SimpleBoxedPipelines {
 
     public Long[] v, v_outer, v_inner, v_forSorting_Baseline ,v_forSorting_LStreams, v_forSorting_Java8Streams;
     public Long[] v_for_megamorphic_filter;
-    
-    @Setup
-    public void setUp() {
-        // Ok, lets use IntStream for this :P
-        v           = IntStream.range(0, N).mapToObj(i -> new Long(i % 1000)).toArray(Long[]::new);
 
-        v_outer     = IntStream.range(0, N_outer).mapToObj(i -> new Long(i % 10)).toArray(Long[]::new);
-        v_inner     = IntStream.range(0, N_inner).mapToObj(i -> new Long(i % 10)).toArray(Long[]::new);
-        v_forSorting_Baseline       = IntStream.range(0, N).mapToObj(i -> new Long(i % 1000)).toArray(Long[]::new);
-        v_forSorting_LStreams       = IntStream.range(0, N).mapToObj(i -> new Long(i % 1000)).toArray(Long[]::new);
-        v_forSorting_Java8Streams   = IntStream.range(0, N).mapToObj(i -> new Long(i % 1000)).toArray(Long[]::new);
-        v_for_megamorphic_filter    = IntStream.range(0, F).mapToObj(i -> new Long(i % 1000)).toArray(Long[]::new);
+    public Long[] fillArray(int range){
+        Long[] array = new Long[range];
+        for (int i = 0; i < range; i++) {
+            array[i] = i % 1000L;
+        }
+        return array;
+    }
+
+    @Setup(Level.Invocation)
+    public void setUp() {
+        v  = fillArray(N);
+        v_outer = fillArray(N_outer);
+        v_inner = fillArray(N_inner);
+        v_forSorting_Baseline = fillArray(N);
+        v_forSorting_Java8Streams = fillArray(N);
+        v_forSorting_LStreams = fillArray(N);
+        v_for_megamorphic_filter = fillArray(F);
     }
 
     @Benchmark
