@@ -24,17 +24,32 @@ public class Benchmark_SimplePrimitivePipelines {
     public long[] v_longs, v_outer, v_inner, v_forSorting_Baseline ,v_forSorting_LStreams, v_forSorting_Java8Streams;
     public int[] v_ints, v_for_megamorphic_filter;
 
+    public int[] fillIntArray(int range){
+        int[] array = new int[range];
+        for (int i = 0; i < range; i++) {
+            array[i] = i % 1000;
+        }
+        return array;
+    }
+
+    public long[] fillLongArray(int range){
+        long[] array = new long[range];
+        for (int i = 0; i < range; i++) {
+            array[i] = i % 1000;
+        }
+        return array;
+    }
+
     @Setup
     public void setUp() {
-        // Ok, lets use IntStream for this :P
-        v_longs     = IntStream.range(0, N).mapToLong(i -> i % 1000).toArray();
-        v_ints      = IntStream.range(0, N).map(i -> i % 1000).toArray();
-        v_outer     = IntStream.range(0, N_outer).mapToLong(i -> i % 10).toArray();
-        v_inner     = IntStream.range(0, N_inner).mapToLong(i -> i % 10).toArray();
-        v_forSorting_Baseline       = IntStream.range(0, N).mapToLong(i -> i % 1000).toArray();
-        v_forSorting_LStreams       = IntStream.range(0, N).mapToLong(i -> i % 1000).toArray();
-        v_forSorting_Java8Streams   = IntStream.range(0, N).mapToLong(i -> i % 1000).toArray();
-        v_for_megamorphic_filter    = IntStream.range(0, F).map(i -> i % 1000).toArray();
+        v_longs = fillLongArray(N);
+        v_ints  = fillIntArray(N);
+        v_outer = fillLongArray(N_outer);
+        v_inner = fillLongArray(N_inner);
+        v_forSorting_Baseline = fillLongArray(N);
+        v_forSorting_Java8Streams = fillLongArray(N);
+        v_forSorting_LStreams = fillLongArray(N);
+        v_for_megamorphic_filter = fillIntArray(F);
     }
 
     @Benchmark
