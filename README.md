@@ -14,8 +14,8 @@ an eager combinator is met.
 As in Java, boxing is avoided with hand specialized
 combinators (e.g. ```LongLStream```). 
 
-The purpose of this library is to help with the study of the lambda inlining decisions
-that the JVM makes, when following the j.u.stream implementation strategy.
+The purpose of this library is to make the study of the lambda inlining decisions
+that the JVM makes easier.
 
 ### Test
 ```shell 
