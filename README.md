@@ -34,8 +34,8 @@ java -Xmx2g -XX:-TieredCompilation -XX:MaxInlineLevel=12 \
      -jar target/microbenchmarks.jar \
      -wi 5 -i 5 -f 1 -gc -tu ms ".*"
 ```
-### Measurements (in-progress)
-*TL;DR* 
+### Measurements
+*in-progress* 
 
 In C2, with large MaxInlineLevel, LStreams are slightly better in the 
 cartesian product case, they are considerably slower in the sort case 
