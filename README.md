@@ -55,11 +55,11 @@ LStreams and Java 8 Streams in the measurements files for both C2 and Graal:
 ### References
 * Inspired by our work on [Clash of the Lambdas](http://biboudis.github.io/clashofthelambdas/)
 * [Nessos/Streams](https://github.com/nessos/Streams) in F#
-* [sml-streams](https://github.com/biboudis/sml-streams) in Standard-ML on MLton
+* [sml-streams](https://github.com/biboudis/sml-streams) in Standard ML on MLton
 * [Graal](http://www.oracle.com/technetwork/oracle-labs/program-languages/overview/index.html)
 * j.u.stream [code](http://hg.openjdk.java.net/jdk9/jdk9/jdk/file/tip/src/java.base/share/classes/java/util/stream) / [docs](http://docs.oracle.com/javase/8/docs/api/java/util/stream/package-summary.html)
 
 ### Dependencies
-* [JMH](http://openjdk.java.net/projects/code-tools/jmh/)
+* [JMH](http://openjdk.java.net/projects/code-tools/jmh/) for microbenchmarking
 * [junit](http://junit.org/)
 * [Guava](https://code.google.com/p/guava-libraries/)
