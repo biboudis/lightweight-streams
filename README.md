@@ -26,13 +26,9 @@ mvn -q test
 mvn clean package -Dskiptests
 
 # run benchmarks
-java -Xmx2g -XX:-TieredCompilation -XX:MaxInlineLevel=12 \
-     -Dbenchmark.N=1000000 \
-     -Dbenchmark.F=3000000 \
-     -Dbenchmark.N_outer=10000 \
-     -Dbenchmark.N_inner=10 \
-     -jar target/microbenchmarks.jar \
-     -wi 5 -i 5 -f 1 -gc -tu ms ".*"
+java -Xmx2g -Xms2g -XX:-TieredCompilation \
+     -Dbenchmark.N=1000000 -Dbenchmark.F=3000000 -Dbenchmark.N_outer=10000 -Dbenchmark.N_inner=10 \
+     -jar target/microbenchmarks.jar -wi 5 -i 5 -f 1 -gc true -tu ms ".*"
 ```
 ### Measurements
 *in-progress* 
